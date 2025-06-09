@@ -1,6 +1,11 @@
+import 'package:ai_chat_robot/common/helper/navigator/app_navigator.dart';
 import 'package:ai_chat_robot/common/helper/widget/ring.dart';
 import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
+import 'package:ai_chat_robot/presentation/chat/pages/chat_page.dart';
+import 'package:ai_chat_robot/presentation/home/bloc/tool_bar_cubit.dart';
+import 'package:ai_chat_robot/presentation/home/bloc/tool_bar_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -9,7 +14,10 @@ class HomePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       drawer: _buildDrawer(context),
-      body: Stack(children: [_buildContainer(), _buildLeftMenuBtn()]),
+      body: MultiBlocProvider(
+        providers: [BlocProvider(create: (context) => ToolBarCubit())],
+        child: Stack(children: [_buildContainer(), _buildLeftMenuBtn()]),
+      ),
     );
   }
 
@@ -70,7 +78,14 @@ class HomePage extends StatelessWidget {
                   _buildTitles(),
                 ],
               ),
-              Column(children: [_buildFunctionButtons(), _buildTitle()]),
+              Column(
+                children: [
+                  _buildFunctionButtons(),
+                  SizedBox(height: 12),
+                  _buildTitle(),
+                  SizedBox(height: 30),
+                ],
+              ),
             ],
           ),
         ),
@@ -171,10 +186,84 @@ class HomePage extends StatelessWidget {
   }
 
   Widget _buildFunctionButtons() {
-    return Row();
+    return BlocBuilder<ToolBarCubit, ToolBarState>(
+      builder: (context, state) {
+        if (state is TooBarStateMarco || state is TooBarStateKeyboard) {
+          return Container(
+            height: 56,
+            width: 200,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(28),
+            ),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    context.read<ToolBarCubit>().switchToMarco();
+                  },
+                  child: Container(
+                    height: 56,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: state is TooBarStateMarco
+                          ? Color(0xff7A5BFE)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    child: Icon(
+                      Icons.mic,
+                      color: state is TooBarStateMarco
+                          ? Colors.white
+                          : Colors.black,
+                      size: 42,
+                    ),
+                  ),
+                ),
+                GestureDetector(
+                  onTap: () {
+                    context.read<ToolBarCubit>().switchToKeyboard();
+                    AppNavigator.push(context, ChatPage());
+                  },
+                  child: Container(
+                    height: 56,
+                    width: 100,
+                    decoration: BoxDecoration(
+                      color: state is TooBarStateKeyboard
+                          ? Color(0xff7A5BFE)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(28),
+                    ),
+                    child: Icon(
+                      Icons.keyboard,
+                      color: state is TooBarStateKeyboard
+                          ? Colors.white
+                          : Colors.black,
+                      size: 42,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+        if (state is TooBarStateSpeaker) {
+          return Container(
+            height: 56,
+            width: 56,
+            decoration: BoxDecoration(
+              color: Color(0xffD80000),
+              shape: BoxShape.circle,
+            ),
+          );
+        }
+        return Container();
+      },
+    );
   }
 
   Widget _buildTitle() {
-    return Text("Tap To Talk");
+    return Text("Tap To Talk", style: TextStyle(color: AppColors.titleGrey));
   }
 }
