@@ -25,7 +25,7 @@ class AIBubble extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           // 头像
-          Image.asset('assets/images/header_image.png', width: 32, height: 32),
+          Image.asset('assets/images/splash.png', width: 32, height: 32),
           const SizedBox(width: 8),
           // 文字气泡
           Flexible(

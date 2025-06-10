@@ -1,6 +1,5 @@
 import 'package:ai_chat_robot/common/helper/navigator/app_navigator.dart';
 import 'package:ai_chat_robot/common/helper/widget/ring.dart';
-import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
 import 'package:ai_chat_robot/presentation/home/pages/home_page.dart';
 import 'package:ai_chat_robot/presentation/splash/bloc/splash_cubit.dart';
 import 'package:ai_chat_robot/presentation/splash/bloc/splash_state.dart';
