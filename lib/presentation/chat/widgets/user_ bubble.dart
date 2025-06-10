@@ -1,9 +1,18 @@
+import 'package:ai_chat_robot/common/widgets/type_writer.dart';
+import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
 import 'package:ai_chat_robot/domain/chat/entities/chat_message_entity.dart';
+import 'package:ai_chat_robot/presentation/chat/bloc/chat_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserBubble extends StatelessWidget {
   final ChatMessageEntity chatMessageEntity;
-  const UserBubble({super.key, required this.chatMessageEntity});
+  final ScrollController scrollController;
+  const UserBubble({
+    super.key,
+    required this.chatMessageEntity,
+    required this.scrollController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,10 +32,11 @@ class UserBubble extends StatelessWidget {
                 color: Color(0xff6640FF),
                 borderRadius: BorderRadius.circular(23),
               ),
-              child: Text(
-                chatMessageEntity.content,
-                style: const TextStyle(fontSize: 16),
-                softWrap: true,
+              child: TypewriterWithScroll(
+                style: TextStyle(color: Colors.white, fontSize: 16),
+                text: chatMessageEntity.content,
+                scrollController: scrollController,
+                charDuration: Duration(milliseconds: 0),
               ),
             ),
           ),
@@ -37,3 +47,23 @@ class UserBubble extends StatelessWidget {
     );
   }
 }
+/*
+
+chatMessageEntity.id !=
+                      context.read<ChatCubit>().newestMessageId
+                  ? Text(
+                      chatMessageEntity.content,
+                      style: TextStyle(
+                        color: AppColors.titleBlack,
+                        fontSize: 16,
+                      ),
+                    )
+                  : TypewriterWithScroll(
+                      style: TextStyle(
+                        color: AppColors.titleBlack,
+                        fontSize: 16,
+                      ),
+                      text: chatMessageEntity.content,
+                      scrollController: scrollController,
+                      charDuration: Duration(milliseconds: 0),
+                    ),*/

@@ -8,6 +8,8 @@ import 'package:uuid/uuid.dart';
 class ChatCubit extends Cubit<ChatState> {
   ChatCubit() : super(ChatInitial());
 
+  String newestMessageId = '';
+
   void sendMessage(String message) async {
     final userMessage = ChatMessageEntity(
       id: Uuid().v4(),
@@ -15,16 +17,24 @@ class ChatCubit extends Cubit<ChatState> {
       isUser: true,
       isError: false,
     );
+    // emit(ChatLoading([...state.messages, userMessage]));
+    newestMessageId = userMessage.id;
     emit(ChatLoading([...state.messages, userMessage]));
 
     var returedData = await sl<ChatUseCase>().call(params: message);
     returedData.fold(
       (l) {
+        newestMessageId = l.id;
         emit(ChatSuccess([...state.messages, l]));
       },
       (r) {
+        newestMessageId = r.id;
         emit(ChatError([...state.messages, r]));
       },
     );
+  }
+
+  void resetNewestMessageId() {
+    newestMessageId = '';
   }
 }

@@ -6,10 +6,24 @@ import 'package:ai_chat_robot/presentation/chat/widgets/user_%20bubble.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class ChatPage extends StatelessWidget {
+class ChatPage extends StatefulWidget {
   ChatPage({super.key});
 
+  @override
+  State<ChatPage> createState() => _ChatPageState();
+}
+
+class _ChatPageState extends State<ChatPage> {
   final TextEditingController _controller = TextEditingController();
+  final ScrollController _scrollController = ScrollController();
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    _controller.dispose();
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,24 +51,26 @@ class ChatPage extends StatelessWidget {
                     return Container();
                   }
                   return SafeArea(
-                    child: Container(
-                      child: Expanded(
-                        child: ListView.separated(
-                          itemBuilder: (ctx, index) {
-                            final messageEntity = state.messages[index];
-                            if (messageEntity.isUser) {
-                              return UserBubble(
-                                chatMessageEntity: messageEntity,
-                              );
-                            } else {
-                              return AIBubble(chatMessageEntity: messageEntity);
-                            }
-                          },
-                          separatorBuilder: (context, index) =>
-                              SizedBox(height: 10),
-                          itemCount: state.messages.length,
-                        ),
-                      ),
+                    child: ListView.separated(
+                      controller: _scrollController,
+                      padding: EdgeInsets.only(top: 44, bottom: 80),
+                      itemBuilder: (ctx, index) {
+                        final messageEntity = state.messages[index];
+                        if (messageEntity.isUser) {
+                          return UserBubble(
+                            chatMessageEntity: messageEntity,
+                            scrollController: _scrollController,
+                          );
+                        } else {
+                          return AIBubble(
+                            chatMessageEntity: messageEntity,
+                            scrollController: _scrollController,
+                          );
+                        }
+                      },
+                      separatorBuilder: (context, index) =>
+                          SizedBox(height: 10),
+                      itemCount: state.messages.length,
                     ),
                   );
                 },
@@ -106,7 +122,7 @@ class ChatPage extends StatelessWidget {
     return SafeArea(
       child: Container(
         alignment: Alignment.topLeft,
-        padding: EdgeInsets.only(top: 10, left: 16),
+        padding: EdgeInsets.only(top: 12, left: 16),
         child: Builder(
           builder: (context) => Container(
             alignment: Alignment.center,

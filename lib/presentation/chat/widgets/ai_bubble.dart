@@ -1,11 +1,20 @@
+import 'package:ai_chat_robot/common/widgets/type_writer.dart';
 import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
 import 'package:ai_chat_robot/domain/chat/entities/chat_message_entity.dart';
+import 'package:ai_chat_robot/presentation/chat/bloc/chat_cubit.dart';
 import 'package:dartz/dartz.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AIBubble extends StatelessWidget {
   final ChatMessageEntity chatMessageEntity;
-  const AIBubble({super.key, required this.chatMessageEntity});
+  final ScrollController scrollController;
+
+  const AIBubble({
+    super.key,
+    required this.chatMessageEntity,
+    required this.scrollController,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -44,14 +53,25 @@ class AIBubble extends StatelessWidget {
                 ),
                 borderRadius: BorderRadius.circular(23),
               ),
-              child: Text(
-                chatMessageEntity.content,
-                style: const TextStyle(
-                  fontSize: 16,
-                  color: AppColors.titleBlack,
-                ),
-                softWrap: true,
-              ),
+              child:
+                  chatMessageEntity.id !=
+                      context.read<ChatCubit>().newestMessageId
+                  ? Text(
+                      chatMessageEntity.content,
+                      style: TextStyle(
+                        color: AppColors.titleBlack,
+                        fontSize: 16,
+                      ),
+                    )
+                  : TypewriterWithScroll(
+                      style: TextStyle(
+                        color: AppColors.titleBlack,
+                        fontSize: 16,
+                      ),
+                      text: chatMessageEntity.content,
+                      scrollController: scrollController,
+                      charDuration: Duration(milliseconds: 50),
+                    ),
             ),
           ),
         ],
@@ -59,3 +79,21 @@ class AIBubble extends StatelessWidget {
     );
   }
 }
+/*
+AnimatedTextKit(
+                      animatedTexts: [
+                        TypewriterAnimatedText(
+                          textStyle: TextStyle(color: AppColors.titleBlack),
+                          chatMessageEntity.content,
+                          speed: const Duration(milliseconds: 50),
+                        ),
+                      ],
+                      totalRepeatCount: 1,
+                      pause: const Duration(milliseconds: 500),
+                      displayFullTextOnTap: true,
+                      stopPauseOnTap: true,
+                      onFinished: () {
+                        context.read<ChatCubit>().resetNewestMessageId();
+                      },
+                    ),
+*/
