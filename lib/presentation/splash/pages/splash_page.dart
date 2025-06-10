@@ -15,7 +15,7 @@ class SplashPage extends StatelessWidget {
     return Scaffold(
       body: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
-          AppNavigator.push(context, HomePage());
+          AppNavigator.pushReplacement(context, HomePage());
         },
         child: Container(
           width: double.infinity,
