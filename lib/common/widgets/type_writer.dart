@@ -66,7 +66,16 @@ class _TypewriterWithScrollState extends State<TypewriterWithScroll> {
         _displayText = widget.text;
         _isCompleted = true;
       });
-
+      // 滚动到底部
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (widget.scrollController.hasClients) {
+          widget.scrollController.animateTo(
+            widget.scrollController.position.maxScrollExtent,
+            duration: Duration(milliseconds: 200),
+            curve: Curves.easeOut,
+          );
+        }
+      });
       if (widget.onComplete != null) {
         widget.onComplete!();
       }
