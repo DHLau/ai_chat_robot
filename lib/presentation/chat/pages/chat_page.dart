@@ -21,6 +21,13 @@ class ChatPage extends StatelessWidget {
                 ], // 渐变结束色],
               ),
             ),
+            child: ListView.separated(
+              itemBuilder: (context, index) {
+                return Container();
+              },
+              separatorBuilder: (context, index) => SizedBox(height: 10),
+              itemCount: 10,
+            ),
           ),
           _buildLeftBackBtn(),
         ],

@@ -39,6 +39,9 @@ dependencies:
   dartz:
   # 依頼注入
   get_it:
+  flutter_dotenv: ^5.1.0
+  http:
+  uuid:
 
 
 dev_dependencies:

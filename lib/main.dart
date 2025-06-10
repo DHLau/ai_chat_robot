@@ -3,9 +3,11 @@ import 'package:ai_chat_robot/presentation/splash/bloc/splash_cubit.dart';
 import 'package:ai_chat_robot/presentation/splash/pages/splash_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
