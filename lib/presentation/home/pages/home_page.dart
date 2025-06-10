@@ -189,76 +189,98 @@ class HomePage extends StatelessWidget {
     return BlocBuilder<ToolBarCubit, ToolBarState>(
       builder: (context, state) {
         if (state is TooBarStateMarco || state is TooBarStateKeyboard) {
+          // 判断背景位置
+          Alignment backgroundAlignment = state is TooBarStateMarco
+              ? Alignment.centerLeft
+              : Alignment.centerRight;
           return Container(
             height: 56,
             width: 200,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Colors.white.withValues(alpha: 0.4),
               borderRadius: BorderRadius.circular(28),
             ),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Stack(
               children: [
-                GestureDetector(
-                  onTap: () {
-                    context.read<ToolBarCubit>().switchToMarco();
-                  },
+                // 动画滑动的紫色背景
+                AnimatedAlign(
+                  alignment: backgroundAlignment,
+                  duration: Duration(milliseconds: 300),
+                  curve: Curves.easeInOut,
                   child: Container(
                     height: 56,
                     width: 100,
                     decoration: BoxDecoration(
-                      color: state is TooBarStateMarco
-                          ? Color(0xff7A5BFE)
-                          : Colors.white,
+                      color: Color(0xff7A5BFE),
                       borderRadius: BorderRadius.circular(28),
-                    ),
-                    child: Icon(
-                      Icons.mic,
-                      color: state is TooBarStateMarco
-                          ? Colors.white
-                          : Colors.black,
-                      size: 42,
                     ),
                   ),
                 ),
-                GestureDetector(
-                  onTap: () {
-                    context.read<ToolBarCubit>().switchToKeyboard();
-                    AppNavigator.push(context, ChatPage());
-                  },
-                  child: Container(
-                    height: 56,
-                    width: 100,
-                    decoration: BoxDecoration(
-                      color: state is TooBarStateKeyboard
-                          ? Color(0xff7A5BFE)
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(28),
+                // 前景图标按钮（透明背景）
+                Row(
+                  children: [
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          context.read<ToolBarCubit>().switchToMarco(() {
+                            context.read<ToolBarCubit>().switchToSpeaker();
+                          });
+                        },
+                        child: Container(
+                          height: 56,
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.mic,
+                            color: state is TooBarStateMarco
+                                ? Colors.white
+                                : Colors.black,
+                            size: 28,
+                          ),
+                        ),
+                      ),
                     ),
-                    child: Icon(
-                      Icons.keyboard,
-                      color: state is TooBarStateKeyboard
-                          ? Colors.white
-                          : Colors.black,
-                      size: 42,
+                    Expanded(
+                      child: GestureDetector(
+                        onTap: () {
+                          context.read<ToolBarCubit>().switchToKeyboard(() {
+                            AppNavigator.push(context, ChatPage());
+                          });
+                        },
+                        child: Container(
+                          height: 56,
+                          alignment: Alignment.center,
+                          child: Icon(
+                            Icons.keyboard,
+                            color: state is TooBarStateKeyboard
+                                ? Colors.white
+                                : Colors.black,
+                            size: 28,
+                          ),
+                        ),
+                      ),
                     ),
-                  ),
+                  ],
                 ),
               ],
             ),
           );
         }
         if (state is TooBarStateSpeaker) {
-          return Container(
-            height: 56,
-            width: 56,
-            decoration: BoxDecoration(
-              color: Color(0xffD80000),
-              shape: BoxShape.circle,
+          return GestureDetector(
+            child: Container(
+              height: 56,
+              width: 56,
+              decoration: BoxDecoration(
+                color: Color(0xffD80000),
+                shape: BoxShape.circle,
+              ),
             ),
+            onTap: () {
+              context.read<ToolBarCubit>().switchToMarco(() {});
+            },
           );
         }
-        return Container();
+        return SizedBox.shrink();
       },
     );
   }
