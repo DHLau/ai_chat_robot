@@ -70,6 +70,9 @@ class AIBubble extends StatelessWidget {
                       text: chatMessageEntity.content,
                       scrollController: scrollController,
                       charDuration: Duration(milliseconds: 50),
+                      onComplete: () {
+                        context.read<ChatCubit>().resetNewestMessageId();
+                      },
                     ),
             ),
           ),

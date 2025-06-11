@@ -1,6 +1,8 @@
 import 'package:ai_chat_robot/common/widgets/type_writer.dart';
 import 'package:ai_chat_robot/domain/chat/entities/chat_message_entity.dart';
+import 'package:ai_chat_robot/presentation/chat/bloc/chat_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class UserBubble extends StatelessWidget {
   final ChatMessageEntity chatMessageEntity;
@@ -29,12 +31,22 @@ class UserBubble extends StatelessWidget {
                 color: Color(0xff6640FF),
                 borderRadius: BorderRadius.circular(23),
               ),
-              child: TypewriterWithScroll(
-                style: TextStyle(color: Colors.white, fontSize: 16),
-                text: chatMessageEntity.content,
-                scrollController: scrollController,
-                charDuration: Duration(milliseconds: 0),
-              ),
+              child:
+                  chatMessageEntity.id !=
+                      context.read<ChatCubit>().newestMessageId
+                  ? Text(
+                      chatMessageEntity.content,
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    )
+                  : TypewriterWithScroll(
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      text: chatMessageEntity.content,
+                      scrollController: scrollController,
+                      charDuration: Duration(milliseconds: 0),
+                      onComplete: () {
+                        context.read<ChatCubit>().resetNewestMessageId();
+                      },
+                    ),
             ),
           ),
           const SizedBox(width: 8),
