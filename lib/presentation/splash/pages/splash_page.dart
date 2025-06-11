@@ -1,6 +1,8 @@
 import 'package:ai_chat_robot/common/helper/navigator/app_navigator.dart';
 import 'package:ai_chat_robot/common/helper/widget/ring.dart';
 import 'package:ai_chat_robot/presentation/home/pages/home_page.dart';
+import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_cubit.dart';
+import 'package:ai_chat_robot/presentation/homeV2/pages/chat_gpt_home.dart';
 import 'package:ai_chat_robot/presentation/splash/bloc/splash_cubit.dart';
 import 'package:ai_chat_robot/presentation/splash/bloc/splash_state.dart';
 import 'package:flutter/material.dart';
@@ -14,7 +16,7 @@ class SplashPage extends StatelessWidget {
     return Scaffold(
       body: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
-          AppNavigator.pushReplacement(context, HomePage());
+          AppNavigator.pushReplacement(context, ChatGptHome());
         },
         child: Container(
           width: double.infinity,
