@@ -26,6 +26,34 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   @override
+  void initState() {
+    super.initState();
+    // 添加监听器，当消息发送后自动滚动到底部
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _scrollToBottom();
+    });
+
+    // 监听消息列表变化，自动滚动到底部
+    context.read<ChatCubit>().stream.listen((state) {
+      if (state.messages.isNotEmpty) {
+        WidgetsBinding.instance.addPostFrameCallback((_) {
+          _scrollToBottom();
+        });
+      }
+    });
+  }
+
+  void _scrollToBottom() {
+    if (_scrollController.hasClients) {
+      _scrollController.animateTo(
+        _scrollController.position.maxScrollExtent,
+        duration: Duration(milliseconds: 300),
+        curve: Curves.easeOutQuart,
+      );
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
@@ -51,6 +79,7 @@ class _ChatPageState extends State<ChatPage> {
                       return ListView.separated(
                         controller: _scrollController,
                         padding: EdgeInsets.symmetric(vertical: 10),
+                        physics: const BouncingScrollPhysics(), // 使用BouncingScrollPhysics提供更好的滚动体验
                         itemCount: state.messages.length,
                         separatorBuilder: (_, __) => SizedBox(height: 10),
                         itemBuilder: (context, index) {
@@ -80,29 +109,36 @@ class _ChatPageState extends State<ChatPage> {
 
   Widget _buildInput() {
     return Builder(
-      builder: (context) => Padding(
-        padding: EdgeInsets.only(
-          left: 16,
-          right: 16,
-          bottom: MediaQuery.of(context).viewInsets.bottom + 16,
-          top: 8,
-        ),
+      builder: (context) => Container(
+        height: 80,
+        padding: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
         child: TextField(
           controller: _controller,
           style: TextStyle(color: AppColors.titleBlack),
           decoration: InputDecoration(
             filled: true,
-            fillColor: Colors.white.withOpacity(0.4),
+            fillColor: Colors.white.withOpacity(0.4), // 修复 withValues 为 withOpacity
             hintText: 'Ask something else',
-            hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)),
+            hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)), // 修复 withValues 为 withOpacity
             contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+            border: OutlineInputBorder(
+              borderRadius: BorderRadius.circular(24),
+              borderSide: BorderSide.none,
+            ),
             suffixIcon: IconButton(
               icon: Icon(Icons.send),
               color: Colors.black,
               onPressed: () {
-                BlocProvider.of<ChatCubit>(
-                  context,
-                ).sendMessage(_controller.text);
+                if (_controller.text.trim().isNotEmpty) {
+                  BlocProvider.of<ChatCubit>(
+                    context,
+                  ).sendMessage(_controller.text);
+                  _controller.clear();
+                  // 发送消息后滚动到底部
+                  WidgetsBinding.instance.addPostFrameCallback((_) {
+                    _scrollToBottom();
+                  });
+                }
               },
             ),
           ),
@@ -112,44 +148,42 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   Widget _buildTopNaviBar() {
-    return SafeArea(
-      child: Container(
-        width: double.infinity,
-        height: 44,
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        child: Row(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            Container(
-              alignment: Alignment.center,
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                color: Colors.white.withValues(alpha: 0.4),
-                shape: BoxShape.circle,
-              ),
-              child: IconButton(
-                iconSize: 25,
-                padding: EdgeInsets.zero,
-                icon: Icon(Icons.menu),
-                color: Colors.black,
-                onPressed: widget.onMenuPressed,
+    return Container(
+      width: double.infinity,
+      height: 44,
+      padding: EdgeInsets.symmetric(horizontal: 12),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Container(
+            alignment: Alignment.center,
+            width: 40,
+            height: 40,
+            decoration: BoxDecoration(
+              color: Colors.white.withOpacity(0.4), // 修复 withValues 为 withOpacity
+              shape: BoxShape.circle,
+            ),
+            child: IconButton(
+              iconSize: 25,
+              padding: EdgeInsets.zero,
+              icon: Icon(Icons.menu),
+              color: Colors.black,
+              onPressed: widget.onMenuPressed,
+            ),
+          ),
+          Container(
+            child: Text(
+              "Chat",
+              style: TextStyle(
+                color: AppColors.titleBlack,
+                fontSize: 20,
+                fontWeight: FontWeight.bold,
               ),
             ),
-            Container(
-              child: Text(
-                "Chat",
-                style: TextStyle(
-                  color: AppColors.titleBlack,
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-            SizedBox(width: 40, height: 40),
-          ],
-        ),
+          ),
+          SizedBox(width: 40, height: 40),
+        ],
       ),
     );
   }

@@ -55,14 +55,17 @@ class _TypewriterWithScrollState extends State<TypewriterWithScroll> {
         // 确保文本更新后，滚动视图滚动到底部  // テキスト更新後にスクロールを一番下まで移動
         WidgetsBinding.instance.addPostFrameCallback((_) {
           if (widget.scrollController.hasClients) {
-            widget.scrollController.animateTo(
-              widget
-                  .scrollController
-                  .position
-                  .maxScrollExtent, // 滚动到底部  // スクロールを一番下へ
-              duration: Duration(milliseconds: 100),
-              curve: Curves.easeOut,
-            );
+            // 只在每5个字符或最后一个字符时滚动，避免频繁滚动
+            if (_currentIndex % 5 == 0 || _currentIndex == widget.text.length) {
+              widget.scrollController.animateTo(
+                widget
+                    .scrollController
+                    .position
+                    .maxScrollExtent, // 滚动到底部  // スクロールを一番下へ
+                duration: Duration(milliseconds: 300),
+                curve: Curves.easeOutQuart,
+              );
+            }
           }
         });
       } else {
@@ -87,8 +90,8 @@ class _TypewriterWithScrollState extends State<TypewriterWithScroll> {
         if (widget.scrollController.hasClients) {
           widget.scrollController.animateTo(
             widget.scrollController.position.maxScrollExtent,
-            duration: Duration(milliseconds: 200),
-            curve: Curves.easeOut,
+            duration: Duration(milliseconds: 300),
+            curve: Curves.easeOutQuart,
           );
         }
       });
