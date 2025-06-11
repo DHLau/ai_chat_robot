@@ -48,16 +48,16 @@ class MenuView extends StatelessWidget {
               ],
             ),
           ),
-          
+
           Divider(color: Colors.white24, height: 1),
-          
+
           // 新对话按钮
           ListTile(
             leading: Icon(Icons.add, color: Colors.white),
             title: Text("新对话", style: TextStyle(color: Colors.white)),
             onTap: () {},
           ),
-          
+
           // 历史记录
           Padding(
             padding: const EdgeInsets.only(left: 16, top: 16, bottom: 8),
@@ -66,25 +66,33 @@ class MenuView extends StatelessWidget {
               style: TextStyle(color: Colors.white54, fontSize: 12),
             ),
           ),
-          
+
           // 历史对话列表（示例）
           ListTile(
             dense: true,
-            leading: Icon(Icons.chat_bubble_outline, color: Colors.white70, size: 20),
+            leading: Icon(
+              Icons.chat_bubble_outline,
+              color: Colors.white70,
+              size: 20,
+            ),
             title: Text("关于Flutter的问题", style: TextStyle(color: Colors.white)),
             onTap: () {},
           ),
           ListTile(
             dense: true,
-            leading: Icon(Icons.chat_bubble_outline, color: Colors.white70, size: 20),
+            leading: Icon(
+              Icons.chat_bubble_outline,
+              color: Colors.white70,
+              size: 20,
+            ),
             title: Text("如何学习Dart语言", style: TextStyle(color: Colors.white)),
             onTap: () {},
           ),
-          
+
           Spacer(),
-          
+
           Divider(color: Colors.white24, height: 1),
-          
+
           // 底部菜单
           ListTile(
             leading: Icon(Icons.settings, color: Colors.white),
@@ -96,7 +104,7 @@ class MenuView extends StatelessWidget {
             title: Text("关于", style: TextStyle(color: Colors.white)),
             onTap: onTapClose,
           ),
-          
+
           SizedBox(height: 20),
         ],
       ),

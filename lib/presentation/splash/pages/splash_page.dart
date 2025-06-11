@@ -16,7 +16,13 @@ class SplashPage extends StatelessWidget {
     return Scaffold(
       body: BlocListener<SplashCubit, SplashState>(
         listener: (context, state) {
-          AppNavigator.pushReplacement(context, ChatGptHome());
+          AppNavigator.pushReplacement(
+            context,
+            BlocProvider(
+              create: (context) => DrawerCubit(),
+              child: ChatGptHome(),
+            ),
+          );
         },
         child: Container(
           width: double.infinity,

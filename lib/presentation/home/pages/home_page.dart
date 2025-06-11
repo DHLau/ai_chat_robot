@@ -243,7 +243,10 @@ class HomePage extends StatelessWidget {
                       child: GestureDetector(
                         onTap: () {
                           context.read<ToolBarCubit>().switchToKeyboard(() {
-                            AppNavigator.push(context, ChatPage());
+                            AppNavigator.push(
+                              context,
+                              ChatPage(onMenuPressed: () {}),
+                            );
                           });
                         },
                         child: Container(

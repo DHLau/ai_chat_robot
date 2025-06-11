@@ -7,7 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ChatPage extends StatefulWidget {
-  ChatPage({super.key});
+  final VoidCallback onMenuPressed;
+  ChatPage({super.key, required this.onMenuPressed});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -19,7 +20,6 @@ class _ChatPageState extends State<ChatPage> {
 
   @override
   void dispose() {
-    // TODO: implement dispose
     _controller.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -76,7 +76,7 @@ class _ChatPageState extends State<ChatPage> {
                 },
               ),
             ),
-            _buildLeftBackBtn(),
+            _buildTopNaviBar(),
             _buildInput(),
           ],
         ),
@@ -118,30 +118,44 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  Widget _buildLeftBackBtn() {
+  Widget _buildTopNaviBar() {
     return SafeArea(
       child: Container(
-        alignment: Alignment.topLeft,
-        padding: EdgeInsets.only(top: 12, left: 16),
-        child: Builder(
-          builder: (context) => Container(
-            alignment: Alignment.center,
-            width: 44,
-            height: 44,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.4),
-              shape: BoxShape.circle,
+        width: double.infinity,
+        height: 44,
+        padding: EdgeInsets.symmetric(horizontal: 12),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Container(
+              alignment: Alignment.center,
+              width: 40,
+              height: 40,
+              decoration: BoxDecoration(
+                color: Colors.white.withValues(alpha: 0.4),
+                shape: BoxShape.circle,
+              ),
+              child: IconButton(
+                iconSize: 25,
+                padding: EdgeInsets.zero,
+                icon: Icon(Icons.menu),
+                color: Colors.black,
+                onPressed: widget.onMenuPressed,
+              ),
             ),
-            child: IconButton(
-              iconSize: 30,
-              padding: EdgeInsets.zero,
-              icon: Icon(Icons.arrow_back),
-              color: Colors.black,
-              onPressed: () {
-                Navigator.pop(context);
-              },
+            Container(
+              child: Text(
+                "Chat",
+                style: TextStyle(
+                  color: AppColors.titleBlack,
+                  fontSize: 20,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
+            SizedBox(width: 40, height: 40),
+          ],
         ),
       ),
     );
