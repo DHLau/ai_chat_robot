@@ -26,34 +26,6 @@ class _ChatPageState extends State<ChatPage> {
   }
 
   @override
-  void initState() {
-    super.initState();
-    // 添加监听器，当消息发送后自动滚动到底部
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      _scrollToBottom();
-    });
-
-    // 监听消息列表变化，自动滚动到底部
-    context.read<ChatCubit>().stream.listen((state) {
-      if (state.messages.isNotEmpty) {
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          _scrollToBottom();
-        });
-      }
-    });
-  }
-
-  void _scrollToBottom() {
-    if (_scrollController.hasClients) {
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: Duration(milliseconds: 300),
-        curve: Curves.easeOutQuart,
-      );
-    }
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: BlocProvider(
@@ -79,7 +51,6 @@ class _ChatPageState extends State<ChatPage> {
                       return ListView.separated(
                         controller: _scrollController,
                         padding: EdgeInsets.symmetric(vertical: 10),
-                        physics: const BouncingScrollPhysics(), // 使用BouncingScrollPhysics提供更好的滚动体验
                         itemCount: state.messages.length,
                         separatorBuilder: (_, __) => SizedBox(height: 10),
                         itemBuilder: (context, index) {
@@ -117,28 +88,17 @@ class _ChatPageState extends State<ChatPage> {
           style: TextStyle(color: AppColors.titleBlack),
           decoration: InputDecoration(
             filled: true,
-            fillColor: Colors.white.withOpacity(0.4), // 修复 withValues 为 withOpacity
+            fillColor: Colors.white.withValues(alpha: 0.4),
             hintText: 'Ask something else',
-            hintStyle: TextStyle(color: Colors.black.withOpacity(0.4)), // 修复 withValues 为 withOpacity
+            hintStyle: TextStyle(color: Colors.black.withValues(alpha: 0.4)),
             contentPadding: EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(24),
-              borderSide: BorderSide.none,
-            ),
             suffixIcon: IconButton(
               icon: Icon(Icons.send),
               color: Colors.black,
               onPressed: () {
-                if (_controller.text.trim().isNotEmpty) {
-                  BlocProvider.of<ChatCubit>(
-                    context,
-                  ).sendMessage(_controller.text);
-                  _controller.clear();
-                  // 发送消息后滚动到底部
-                  WidgetsBinding.instance.addPostFrameCallback((_) {
-                    _scrollToBottom();
-                  });
-                }
+                BlocProvider.of<ChatCubit>(
+                  context,
+                ).sendMessage(_controller.text);
               },
             ),
           ),
@@ -161,7 +121,7 @@ class _ChatPageState extends State<ChatPage> {
             width: 40,
             height: 40,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.4), // 修复 withValues 为 withOpacity
+              color: Colors.white.withValues(alpha: 0.4),
               shape: BoxShape.circle,
             ),
             child: IconButton(
