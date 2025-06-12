@@ -1,5 +1,8 @@
 import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
+import 'package:ai_chat_robot/presentation/auth/bloc/auth_cubit.dart';
+import 'package:ai_chat_robot/presentation/auth/bloc/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AuthPage extends StatelessWidget {
   const AuthPage({super.key});
@@ -7,22 +10,44 @@ class AuthPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(
-        color: Colors.white,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-          children: [
-            _buildNaviBar(context),
-            Text(
-              "AIChatRobot",
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
+      body: BlocProvider(
+        create: (context) => AuthCubit(),
+        child: BlocBuilder<AuthCubit, AuthState>(
+          builder: (context, state) {
+            return Container(
+              color: Colors.white,
+              child: Stack(
+                children: [
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      _buildNaviBar(context),
+                      Text(
+                        "AIChatRobot",
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 24,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      _buildBottomBar(context),
+                    ],
+                  ),
+                  state is AuthLoading
+                      ? Container(
+                          width: double.infinity,
+                          height: double.infinity,
+                          child: Center(
+                            child: const CircularProgressIndicator(
+                              color: Colors.black,
+                            ),
+                          ),
+                        )
+                      : Container(),
+                ],
               ),
-            ),
-            _buildBottomBar(context),
-          ],
+            );
+          },
         ),
       ),
     );
@@ -87,7 +112,7 @@ class AuthPage extends StatelessWidget {
     );
   }
 
-  Container _buildSigninWithEmail(BuildContext context) {
+  Widget _buildSigninWithEmail(BuildContext context) {
     return Container(
       height: 44,
       width: MediaQuery.of(context).size.width - 50,
@@ -109,7 +134,7 @@ class AuthPage extends StatelessWidget {
     );
   }
 
-  Container _buildSigninWithApple(BuildContext context) {
+  Widget _buildSigninWithApple(BuildContext context) {
     return Container(
       height: 44,
       width: MediaQuery.of(context).size.width - 50,
@@ -130,7 +155,7 @@ class AuthPage extends StatelessWidget {
     );
   }
 
-  Container _buildSignupWithEmail(BuildContext context) {
+  Widget _buildSignupWithEmail(BuildContext context) {
     return Container(
       height: 44,
       width: MediaQuery.of(context).size.width - 50,
@@ -151,7 +176,7 @@ class AuthPage extends StatelessWidget {
     );
   }
 
-  Container _buildSigninWithGoogle(BuildContext context) {
+  Widget _buildSigninWithGoogle(BuildContext context) {
     return Container(
       height: 44,
       width: MediaQuery.of(context).size.width - 50,
