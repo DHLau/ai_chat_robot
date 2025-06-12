@@ -1,4 +1,6 @@
+import 'package:ai_chat_robot/common/helper/navigator/app_navigator.dart';
 import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
+import 'package:ai_chat_robot/presentation/auth/pages/auth_page.dart';
 import 'package:ai_chat_robot/presentation/chat/bloc/chat_cubit.dart';
 import 'package:ai_chat_robot/presentation/chat/bloc/chat_state.dart';
 import 'package:ai_chat_robot/presentation/chat/widgets/ai_bubble.dart';
@@ -112,27 +114,51 @@ class _ChatPageState extends State<ChatPage> {
       width: double.infinity,
       height: 44,
       padding: EdgeInsets.symmetric(horizontal: 12),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      child: Stack(
         children: [
-          Container(
-            alignment: Alignment.center,
-            width: 40,
-            height: 40,
-            decoration: BoxDecoration(
-              color: Colors.white.withValues(alpha: 0.4),
-              shape: BoxShape.circle,
-            ),
-            child: IconButton(
-              iconSize: 25,
-              padding: EdgeInsets.zero,
-              icon: Icon(Icons.menu),
-              color: Colors.black,
-              onPressed: widget.onMenuPressed,
-            ),
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                alignment: Alignment.center,
+                width: 40,
+                height: 40,
+                decoration: BoxDecoration(
+                  color: Colors.white.withValues(alpha: 0.4),
+                  shape: BoxShape.circle,
+                ),
+                child: IconButton(
+                  iconSize: 25,
+                  padding: EdgeInsets.zero,
+                  icon: Icon(Icons.menu),
+                  color: Colors.black,
+                  onPressed: widget.onMenuPressed,
+                ),
+              ),
+              Container(
+                alignment: Alignment.center,
+                height: 40,
+                decoration: BoxDecoration(),
+                child: TextButton(
+                  onPressed: () {
+                    AppNavigator.push(context, AuthPage());
+                  },
+                  child: Text(
+                    "Sign in",
+                    style: TextStyle(color: AppColors.titleBlack, fontSize: 16),
+                  ),
+                ),
+              ),
+            ],
           ),
           Container(
+            margin: EdgeInsets.symmetric(
+              horizontal: MediaQuery.of(context).size.width / 2 - 38,
+              vertical: 10,
+            ),
+            width: 100,
+            height: 44,
             child: Text(
               "Chat",
               style: TextStyle(
@@ -142,7 +168,6 @@ class _ChatPageState extends State<ChatPage> {
               ),
             ),
           ),
-          SizedBox(width: 40, height: 40),
         ],
       ),
     );
