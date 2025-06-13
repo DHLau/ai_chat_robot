@@ -1,5 +1,6 @@
 import 'package:ai_chat_robot/core/configs/theme/app_theme.dart';
 import 'package:ai_chat_robot/firebase_options.dart';
+import 'package:ai_chat_robot/presentation/auth/pages/sign_in.dart';
 import 'package:ai_chat_robot/presentation/splash/bloc/splash_cubit.dart';
 import 'package:ai_chat_robot/presentation/splash/pages/splash_page.dart';
 import 'package:ai_chat_robot/service_locator.dart';

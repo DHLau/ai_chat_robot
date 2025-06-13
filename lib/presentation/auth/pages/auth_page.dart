@@ -2,6 +2,8 @@ import 'package:ai_chat_robot/common/helper/navigator/app_navigator.dart';
 import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
 import 'package:ai_chat_robot/presentation/auth/bloc/auth_cubit.dart';
 import 'package:ai_chat_robot/presentation/auth/bloc/auth_state.dart';
+import 'package:ai_chat_robot/presentation/auth/pages/sign_in.dart';
+import 'package:ai_chat_robot/presentation/auth/pages/sign_up.dart';
 import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_cubit.dart';
 import 'package:ai_chat_robot/presentation/homeV2/pages/chat_gpt_home.dart';
 import 'package:flutter/material.dart';
@@ -122,30 +124,61 @@ class AuthPage extends StatelessWidget {
           SizedBox(height: 16),
           _buildSigninWithGoogle(context),
           SizedBox(height: 12),
-          _buildSignupWithEmail(context),
+          _buildSignup(context),
           SizedBox(height: 12),
-          _buildSigninWithEmail(context),
+          _buildSignin(context),
         ],
       ),
     );
   }
 
-  Widget _buildSigninWithEmail(BuildContext context) {
-    return Container(
-      height: 44,
-      width: MediaQuery.of(context).size.width - 50,
-      decoration: BoxDecoration(
-        color: Colors.black,
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-        border: Border.all(color: Color(0xff2c2c2c), width: 3),
+  Widget _buildSignin(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        AppNavigator.modal(context, SignInPage());
+      },
+      child: Container(
+        height: 44,
+        width: MediaQuery.of(context).size.width - 50,
+        decoration: BoxDecoration(
+          color: Colors.black,
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+          border: Border.all(color: Color(0xff2c2c2c), width: 3),
+        ),
+        child: Center(
+          child: Text(
+            "Sign In",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
       ),
-      child: Center(
-        child: Text(
-          "Sign In",
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
+    );
+  }
+
+  Widget _buildSignup(BuildContext context) {
+    return GestureDetector(
+      onTap: () {
+        AppNavigator.modal(context, SignUpPage());
+      },
+      child: Container(
+        height: 44,
+        width: MediaQuery.of(context).size.width - 50,
+        decoration: BoxDecoration(
+          color: Color(0xff2c2c2c),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        child: Center(
+          child: Text(
+            "Sign Up",
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 18,
+              fontWeight: FontWeight.w600,
+            ),
           ),
         ),
       ),
@@ -165,27 +198,6 @@ class AuthPage extends StatelessWidget {
           " Sign In With Apple",
           style: TextStyle(
             color: Colors.black,
-            fontSize: 18,
-            fontWeight: FontWeight.w600,
-          ),
-        ),
-      ),
-    );
-  }
-
-  Widget _buildSignupWithEmail(BuildContext context) {
-    return Container(
-      height: 44,
-      width: MediaQuery.of(context).size.width - 50,
-      decoration: BoxDecoration(
-        color: Color(0xff2c2c2c),
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-      ),
-      child: Center(
-        child: Text(
-          "Sign Up",
-          style: TextStyle(
-            color: Colors.white,
             fontSize: 18,
             fontWeight: FontWeight.w600,
           ),

@@ -16,6 +16,13 @@ class AppNavigator {
     );
   }
 
+  static void modal(BuildContext context, Widget page) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(fullscreenDialog: true, builder: (context) => page),
+    );
+  }
+
   static void push(BuildContext context, Widget page) {
     Navigator.push(context, MaterialPageRoute(builder: (context) => page));
   }
