@@ -1,5 +1,6 @@
 import 'package:ai_chat_robot/common/helper/navigator/app_navigator.dart';
 import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
+import 'package:ai_chat_robot/presentation/auth/bloc/is_logged_in_cubit.dart';
 import 'package:ai_chat_robot/presentation/auth/pages/auth_page.dart';
 import 'package:ai_chat_robot/presentation/chat/bloc/chat_cubit.dart';
 import 'package:ai_chat_robot/presentation/chat/bloc/chat_state.dart';
@@ -30,8 +31,13 @@ class _ChatPageState extends State<ChatPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: BlocProvider(
-        create: (context) => ChatCubit(),
+      body: MultiBlocProvider(
+        providers: [
+          BlocProvider(create: (context) => ChatCubit()),
+          BlocProvider(
+            create: (context) => IsLoggedInCubit()..checkIsLoggedIn(),
+          ),
+        ],
         child: Container(
           decoration: BoxDecoration(
             gradient: LinearGradient(
@@ -136,19 +142,26 @@ class _ChatPageState extends State<ChatPage> {
                   onPressed: widget.onMenuPressed,
                 ),
               ),
-              Container(
-                alignment: Alignment.center,
-                height: 40,
-                decoration: BoxDecoration(),
-                child: TextButton(
-                  onPressed: () {
-                    AppNavigator.push(context, AuthPage());
-                  },
-                  child: Text(
-                    "Sign in",
-                    style: TextStyle(color: AppColors.titleBlack, fontSize: 16),
-                  ),
-                ),
+              BlocBuilder<IsLoggedInCubit, bool>(
+                builder: (context, state) => state == true
+                    ? Container(height: 40)
+                    : Container(
+                        alignment: Alignment.center,
+                        height: 40,
+                        decoration: BoxDecoration(),
+                        child: TextButton(
+                          onPressed: () {
+                            AppNavigator.push(context, AuthPage());
+                          },
+                          child: Text(
+                            "Sign in",
+                            style: TextStyle(
+                              color: AppColors.titleBlack,
+                              fontSize: 16,
+                            ),
+                          ),
+                        ),
+                      ),
               ),
             ],
           ),

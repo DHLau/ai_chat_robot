@@ -7,6 +7,7 @@ abstract class AuthFirebaseService {
   Future<Either> signup(UserCreationReq userCreationReq);
   Future<Either> signin(UserCreationReq userCreationReq);
   Future<Either> signinWithGoogle();
+  Future<bool> isLoggedIn();
 }
 
 class AuthFirebaseServiceImpl extends AuthFirebaseService {
@@ -42,5 +43,14 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
   @override
   Future<Either> signup(UserCreationReq userCreationReq) {
     throw UnimplementedError();
+  }
+
+  @override
+  Future<bool> isLoggedIn() async {
+    if (FirebaseAuth.instance.currentUser != null) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

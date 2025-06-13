@@ -1,6 +1,9 @@
+import 'package:ai_chat_robot/common/helper/navigator/app_navigator.dart';
 import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
 import 'package:ai_chat_robot/presentation/auth/bloc/auth_cubit.dart';
 import 'package:ai_chat_robot/presentation/auth/bloc/auth_state.dart';
+import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_cubit.dart';
+import 'package:ai_chat_robot/presentation/homeV2/pages/chat_gpt_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,9 +15,35 @@ class AuthPage extends StatelessWidget {
     return Scaffold(
       body: BlocProvider(
         create: (context) => AuthCubit(),
-        child: BlocBuilder<AuthCubit, AuthState>(
-          builder: (context, state) {
-            return Container(
+        child: BlocListener<AuthCubit, AuthState>(
+          listener: (context, state) {
+            if (state is AuthLoading) {
+              showDialog(
+                context: context,
+                barrierDismissible: false,
+                builder: (context) => const Center(
+                  child: CircularProgressIndicator(color: Colors.black),
+                ),
+              );
+            } else if (state is AuthSuccess) {
+              var snackBar = SnackBar(
+                content: Text("登录成功 ${state.user.userId}"),
+              );
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+              AppNavigator.pushReplacement(
+                context,
+                BlocProvider(
+                  create: (context) => DrawerCubit(),
+                  child: ChatGptHome(),
+                ),
+              );
+            } else if (state is AuthFailure) {
+              var snackBar = SnackBar(content: Text(state.message));
+              ScaffoldMessenger.of(context).showSnackBar(snackBar);
+            }
+          },
+          child: Builder(
+            builder: (context) => Container(
               color: Colors.white,
               child: Stack(
                 children: [
@@ -33,21 +62,10 @@ class AuthPage extends StatelessWidget {
                       _buildBottomBar(context),
                     ],
                   ),
-                  state is AuthLoading
-                      ? Container(
-                          width: double.infinity,
-                          height: double.infinity,
-                          child: Center(
-                            child: const CircularProgressIndicator(
-                              color: Colors.black,
-                            ),
-                          ),
-                        )
-                      : Container(),
                 ],
               ),
-            );
-          },
+            ),
+          ),
         ),
       ),
     );
@@ -177,28 +195,33 @@ class AuthPage extends StatelessWidget {
   }
 
   Widget _buildSigninWithGoogle(BuildContext context) {
-    return Container(
-      height: 44,
-      width: MediaQuery.of(context).size.width - 50,
-      decoration: BoxDecoration(
-        color: Color(0xff2c2c2c),
-        borderRadius: BorderRadius.all(Radius.circular(12)),
-      ),
-      child: Center(
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Image.asset('assets/images/google.png', width: 24, height: 24),
-            SizedBox(width: 8),
-            Text(
-              "Sign In With Google",
-              style: TextStyle(
-                color: Colors.white,
-                fontSize: 18,
-                fontWeight: FontWeight.w600,
+    return GestureDetector(
+      onTap: () {
+        context.read<AuthCubit>().signInWithGoogle();
+      },
+      child: Container(
+        height: 44,
+        width: MediaQuery.of(context).size.width - 50,
+        decoration: BoxDecoration(
+          color: Color(0xff2c2c2c),
+          borderRadius: BorderRadius.all(Radius.circular(12)),
+        ),
+        child: Center(
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.asset('assets/images/google.png', width: 24, height: 24),
+              SizedBox(width: 8),
+              Text(
+                "Sign In With Google",
+                style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w600,
+                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
