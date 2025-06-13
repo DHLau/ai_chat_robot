@@ -75,7 +75,13 @@ class SignUpPage extends StatelessWidget {
                       borderRadius: BorderRadius.circular(30),
                     ),
                     child: Center(
-                      child: Text("继续", style: TextStyle(fontSize: 18)),
+                      child: Text(
+                        "继续",
+                        style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
                   ),
                 ],

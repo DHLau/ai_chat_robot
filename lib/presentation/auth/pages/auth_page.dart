@@ -49,16 +49,19 @@ class AuthPage extends StatelessWidget {
               color: Colors.white,
               child: Stack(
                 children: [
+                  _buildNaviBar(context),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
-                      _buildNaviBar(context),
-                      Text(
-                        "AIChatRobot",
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
+                      Container(
+                        padding: EdgeInsets.only(top: 240),
+                        child: Text(
+                          "ChatRobot",
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       _buildBottomBar(context),
@@ -75,28 +78,13 @@ class AuthPage extends StatelessWidget {
 
   Widget _buildNaviBar(BuildContext context) {
     return SafeArea(
-      child: Container(
-        width: double.infinity,
-        height: 44,
-        padding: EdgeInsets.symmetric(horizontal: 12),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.end,
-          children: [
-            Container(
-              width: 40,
-              height: 40,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.grey.withValues(alpha: 0.5),
-              ),
-              child: IconButton(
-                icon: Icon(Icons.close, color: AppColors.titleBlack),
-                onPressed: () {
-                  Navigator.pop(context);
-                },
-              ),
-            ),
-          ],
+      child: GestureDetector(
+        onTap: () {
+          Navigator.pop(context);
+        },
+        child: Container(
+          padding: EdgeInsets.fromLTRB(16, 16, 0, 0),
+          child: Icon(Icons.close, color: Colors.black, size: 32),
         ),
       ),
     );
