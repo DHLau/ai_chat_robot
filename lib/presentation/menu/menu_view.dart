@@ -8,7 +8,7 @@ class MenuView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.blueGrey[900],
+      color: Colors.white,
       width: 250,
       padding: EdgeInsets.only(top: 50),
       child: Column(
@@ -22,7 +22,7 @@ class MenuView extends StatelessWidget {
                 CircleAvatar(
                   backgroundColor: Colors.white24,
                   radius: 24,
-                  child: Icon(Icons.person, color: Colors.white, size: 30),
+                  child: Icon(Icons.person, color: Colors.black, size: 30),
                 ),
                 SizedBox(width: 12),
                 Expanded(
@@ -32,7 +32,7 @@ class MenuView extends StatelessWidget {
                       Text(
                         "用户",
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                           fontWeight: FontWeight.bold,
                           fontSize: 16,
                         ),
@@ -40,7 +40,7 @@ class MenuView extends StatelessWidget {
                       SizedBox(height: 4),
                       Text(
                         "免费账户",
-                        style: TextStyle(color: Colors.white70, fontSize: 12),
+                        style: TextStyle(color: Colors.black, fontSize: 12),
                       ),
                     ],
                   ),
@@ -49,12 +49,12 @@ class MenuView extends StatelessWidget {
             ),
           ),
 
-          Divider(color: Colors.white24, height: 1),
+          Divider(color: Colors.black, height: 1),
 
           // 新对话按钮
           ListTile(
-            leading: Icon(Icons.add, color: Colors.white),
-            title: Text("新对话", style: TextStyle(color: Colors.white)),
+            leading: Icon(Icons.add, color: Colors.black),
+            title: Text("新对话", style: TextStyle(color: Colors.black)),
             onTap: () {},
           ),
 
@@ -63,7 +63,7 @@ class MenuView extends StatelessWidget {
             padding: const EdgeInsets.only(left: 16, top: 16, bottom: 8),
             child: Text(
               "历史记录",
-              style: TextStyle(color: Colors.white54, fontSize: 12),
+              style: TextStyle(color: Colors.black, fontSize: 12),
             ),
           ),
 
@@ -72,10 +72,10 @@ class MenuView extends StatelessWidget {
             dense: true,
             leading: Icon(
               Icons.chat_bubble_outline,
-              color: Colors.white70,
+              color: Colors.black,
               size: 20,
             ),
-            title: Text("关于Flutter的问题", style: TextStyle(color: Colors.white)),
+            title: Text("关于Flutter的问题", style: TextStyle(color: Colors.black)),
             onTap: () {},
           ),
           ListTile(
@@ -85,7 +85,7 @@ class MenuView extends StatelessWidget {
               color: Colors.white70,
               size: 20,
             ),
-            title: Text("如何学习Dart语言", style: TextStyle(color: Colors.white)),
+            title: Text("如何学习Dart语言", style: TextStyle(color: Colors.black)),
             onTap: () {},
           ),
 
@@ -95,13 +95,13 @@ class MenuView extends StatelessWidget {
 
           // 底部菜单
           ListTile(
-            leading: Icon(Icons.settings, color: Colors.white),
-            title: Text("设置", style: TextStyle(color: Colors.white)),
+            leading: Icon(Icons.settings, color: Colors.black),
+            title: Text("设置", style: TextStyle(color: Colors.black)),
             onTap: onTapClose,
           ),
           ListTile(
-            leading: Icon(Icons.info_outline, color: Colors.white),
-            title: Text("关于", style: TextStyle(color: Colors.white)),
+            leading: Icon(Icons.info_outline, color: Colors.black),
+            title: Text("关于", style: TextStyle(color: Colors.black)),
             onTap: onTapClose,
           ),
 

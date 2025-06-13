@@ -15,7 +15,6 @@ class ChatGptHome extends StatefulWidget {
 
 class _ChatGptHomeState extends State<ChatGptHome> {
   final ScrollController _controller = ScrollController();
-  double _dragStartX = 0.0;
   bool _hapticTriggered = false;
   int animateTime = 150;
 
@@ -39,7 +38,6 @@ class _ChatGptHomeState extends State<ChatGptHome> {
 
   void _onScroll() {
     final offset = _controller.offset;
-    final menuWidth = MediaQuery.of(context).size.width * 0.7;
 
     // 可选：增加震动反馈
     if (!_hapticTriggered && offset < 10) {
@@ -113,10 +111,12 @@ class _ChatGptHomeState extends State<ChatGptHome> {
                   SizedBox(
                     width: screenWidth,
                     height: screenHeight,
-                    child: ChatPage(
-                      onMenuPressed: () {
-                        context.read<DrawerCubit>().drawerToggle();
-                      },
+                    child: Container(
+                      child: ChatPage(
+                        onMenuPressed: () {
+                          context.read<DrawerCubit>().drawerToggle();
+                        },
+                      ),
                     ),
                   ),
                 ],

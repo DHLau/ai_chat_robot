@@ -40,11 +40,12 @@ class _ChatPageState extends State<ChatPage> {
         ],
         child: Container(
           decoration: BoxDecoration(
-            gradient: LinearGradient(
-              begin: Alignment.topCenter,
-              end: Alignment.bottomCenter,
-              colors: [Color(0xFFA7BAFF), Color(0xFFDFE4FE)],
-            ),
+            // gradient: LinearGradient(
+            //   begin: Alignment.topCenter,
+            //   end: Alignment.bottomCenter,
+            //   colors: [Color(0xFFA7BAFF), Color(0xFFDFE4FE)],
+            // ),
+            color: Colors.white,
           ),
           child: SafeArea(
             child: Column(
