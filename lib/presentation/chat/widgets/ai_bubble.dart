@@ -39,24 +39,6 @@ class AIBubble extends StatelessWidget {
                   context.read<DrawerProgressCubit>().state.clamp(0.0, 1.0),
                 ),
                 borderRadius: BorderRadius.circular(23),
-                // gradient: const LinearGradient(
-                //   begin: Alignment.centerRight,
-                //   end: Alignment.centerLeft,
-                //   colors: [
-                //     Color.fromRGBO(
-                //       149,
-                //       172,
-                //       255,
-                //       0.34,
-                //     ), // rgba(149,172,255,0.34)
-                //     Color.fromRGBO(253, 177, 255, 0.2),
-                //     Color.fromRGBO(254, 212, 255, 0.37),
-                //     Color.fromRGBO(254, 212, 255, 0.37),
-                //     Color.fromRGBO(253, 177, 255, 0.2),
-                //     Color.fromRGBO(149, 172, 255, 0.34),
-                //   ],
-                //   stops: [0.0, 0.28, 0.44, 0.61, 0.81, 0.99],
-                // ),
               ),
               child:
                   chatMessageEntity.id !=
@@ -88,6 +70,24 @@ class AIBubble extends StatelessWidget {
   }
 }
 /*
+// gradient: const LinearGradient(
+                //   begin: Alignment.centerRight,
+                //   end: Alignment.centerLeft,
+                //   colors: [
+                //     Color.fromRGBO(
+                //       149,
+                //       172,
+                //       255,
+                //       0.34,
+                //     ), // rgba(149,172,255,0.34)
+                //     Color.fromRGBO(253, 177, 255, 0.2),
+                //     Color.fromRGBO(254, 212, 255, 0.37),
+                //     Color.fromRGBO(254, 212, 255, 0.37),
+                //     Color.fromRGBO(253, 177, 255, 0.2),
+                //     Color.fromRGBO(149, 172, 255, 0.34),
+                //   ],
+                //   stops: [0.0, 0.28, 0.44, 0.61, 0.81, 0.99],
+                // ),
 AnimatedTextKit(
                       animatedTexts: [
                         TypewriterAnimatedText(
