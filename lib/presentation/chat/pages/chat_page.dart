@@ -43,7 +43,7 @@ class _ChatPageState extends State<ChatPage> {
           builder: (context, state) => Container(
             decoration: BoxDecoration(
               color: Color.lerp(
-                Colors.grey,
+                Color(0xffe0e0e0),
                 Colors.white,
                 context.read<DrawerProgressCubit>().state.clamp(0.0, 1.0),
               ),
