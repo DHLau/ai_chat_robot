@@ -2,6 +2,7 @@ import 'package:ai_chat_robot/common/widgets/type_writer.dart';
 import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
 import 'package:ai_chat_robot/domain/chat/entities/chat_message_entity.dart';
 import 'package:ai_chat_robot/presentation/chat/bloc/chat_cubit.dart';
+import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_progress_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -32,7 +33,12 @@ class AIBubble extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Color.lerp(
+                  Color(0xffe0e0e0),
+                  Colors.white,
+                  context.read<DrawerProgressCubit>().state.clamp(0.0, 1.0),
+                ),
+                borderRadius: BorderRadius.circular(23),
                 // gradient: const LinearGradient(
                 //   begin: Alignment.centerRight,
                 //   end: Alignment.centerLeft,
@@ -51,7 +57,6 @@ class AIBubble extends StatelessWidget {
                 //   ],
                 //   stops: [0.0, 0.28, 0.44, 0.61, 0.81, 0.99],
                 // ),
-                borderRadius: BorderRadius.circular(23),
               ),
               child:
                   chatMessageEntity.id !=

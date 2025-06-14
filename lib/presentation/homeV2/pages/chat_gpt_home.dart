@@ -53,7 +53,7 @@ class _ChatGptHomeState extends State<ChatGptHome> {
   Widget build(BuildContext context) {
     final screenWidth = MediaQuery.of(context).size.width;
     final screenHeight = MediaQuery.of(context).size.height;
-    final menuWidth = screenWidth * 0.7;
+    final menuWidth = screenWidth * 0.82;
 
     return Scaffold(
       body: BlocListener<DrawerCubit, bool>(
