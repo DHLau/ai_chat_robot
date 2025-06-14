@@ -18,38 +18,39 @@ class AIBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(24, 12, 36, 12),
+      padding: const EdgeInsets.fromLTRB(12, 12, 36, 12),
       width: double.infinity,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
-          // 头像
-          Image.asset('assets/images/splash.png', width: 32, height: 32),
-          const SizedBox(width: 8),
+          // // 头像
+          // Image.asset('assets/images/splash.png', width: 32, height: 32),
+          // const SizedBox(width: 8),
           // 文字气泡
           Flexible(
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.centerRight,
-                  end: Alignment.centerLeft,
-                  colors: [
-                    Color.fromRGBO(
-                      149,
-                      172,
-                      255,
-                      0.34,
-                    ), // rgba(149,172,255,0.34)
-                    Color.fromRGBO(253, 177, 255, 0.2),
-                    Color.fromRGBO(254, 212, 255, 0.37),
-                    Color.fromRGBO(254, 212, 255, 0.37),
-                    Color.fromRGBO(253, 177, 255, 0.2),
-                    Color.fromRGBO(149, 172, 255, 0.34),
-                  ],
-                  stops: [0.0, 0.28, 0.44, 0.61, 0.81, 0.99],
-                ),
+                color: Colors.white,
+                // gradient: const LinearGradient(
+                //   begin: Alignment.centerRight,
+                //   end: Alignment.centerLeft,
+                //   colors: [
+                //     Color.fromRGBO(
+                //       149,
+                //       172,
+                //       255,
+                //       0.34,
+                //     ), // rgba(149,172,255,0.34)
+                //     Color.fromRGBO(253, 177, 255, 0.2),
+                //     Color.fromRGBO(254, 212, 255, 0.37),
+                //     Color.fromRGBO(254, 212, 255, 0.37),
+                //     Color.fromRGBO(253, 177, 255, 0.2),
+                //     Color.fromRGBO(149, 172, 255, 0.34),
+                //   ],
+                //   stops: [0.0, 0.28, 0.44, 0.61, 0.81, 0.99],
+                // ),
                 borderRadius: BorderRadius.circular(23),
               ),
               child:

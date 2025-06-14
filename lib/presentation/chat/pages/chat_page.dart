@@ -114,8 +114,8 @@ class _ChatPageState extends State<ChatPage> {
           boxShadow: [
             BoxShadow(
               color: Color(0xffe0e0e0),
-              blurRadius: 16,
-              offset: Offset(0, -16),
+              blurRadius: 12,
+              offset: Offset(0, -12),
             ),
           ],
         ),

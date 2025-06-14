@@ -16,7 +16,7 @@ class UserBubble extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.fromLTRB(36, 12, 24, 12),
+      padding: const EdgeInsets.fromLTRB(36, 12, 12, 12),
       width: double.infinity,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -28,7 +28,7 @@ class UserBubble extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: Color(0xff6640FF),
+                color: Color(0xfff2f2f2),
                 borderRadius: BorderRadius.circular(23),
               ),
               child:
@@ -36,10 +36,10 @@ class UserBubble extends StatelessWidget {
                       context.read<ChatCubit>().newestMessageId
                   ? Text(
                       chatMessageEntity.content,
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(color: Colors.black, fontSize: 16),
                     )
                   : TypewriterWithScroll(
-                      style: TextStyle(color: Colors.white, fontSize: 16),
+                      style: TextStyle(color: Colors.black, fontSize: 16),
                       text: chatMessageEntity.content,
                       scrollController: scrollController,
                       charDuration: Duration(milliseconds: 0),
@@ -49,8 +49,8 @@ class UserBubble extends StatelessWidget {
                     ),
             ),
           ),
-          const SizedBox(width: 8),
-          Image.asset('assets/images/header_image.png', width: 32, height: 32),
+          // const SizedBox(width: 8),
+          // Image.asset('assets/images/header_image.png', width: 32, height: 32),
         ],
       ),
     );
