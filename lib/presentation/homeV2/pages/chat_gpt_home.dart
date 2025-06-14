@@ -31,22 +31,8 @@ class _ChatGptHomeState extends State<ChatGptHome> {
 
     // WidgetsBinding 确保在第一帧渲染后滚动
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      _controller.jumpTo(MediaQuery.of(context).size.width * 0.7);
+      _controller.jumpTo(MediaQuery.of(context).size.width * 0.82);
     });
-
-    _controller.addListener(_onScroll);
-  }
-
-  void _onScroll() {
-    final offset = _controller.offset;
-
-    // 可选：增加震动反馈
-    if (!_hapticTriggered && offset < 10) {
-      HapticFeedback.selectionClick();
-      _hapticTriggered = true;
-    } else if (offset > 20) {
-      _hapticTriggered = false;
-    }
   }
 
   @override
@@ -70,6 +56,10 @@ class _ChatGptHomeState extends State<ChatGptHome> {
             onNotification: (ScrollNotification notification) {
               final percent = _controller.offset / menuWidth;
               context.read<DrawerProgressCubit>().drawerCurrentPercent(percent);
+              if (notification is ScrollEndNotification) {
+                HapticFeedback.mediumImpact();
+              }
+
               if (notification is UserScrollNotification) {
                 // 确保是 UserScrollNotification 类型
                 if (notification.direction == ScrollDirection.idle) {
