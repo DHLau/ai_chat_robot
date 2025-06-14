@@ -6,6 +6,7 @@ import 'package:ai_chat_robot/presentation/chat/bloc/chat_cubit.dart';
 import 'package:ai_chat_robot/presentation/chat/bloc/chat_state.dart';
 import 'package:ai_chat_robot/presentation/chat/widgets/ai_bubble.dart';
 import 'package:ai_chat_robot/presentation/chat/widgets/user_%20bubble.dart';
+import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_progress_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -38,48 +39,49 @@ class _ChatPageState extends State<ChatPage> {
             create: (context) => IsLoggedInCubit()..checkIsLoggedIn(),
           ),
         ],
-        child: Container(
-          decoration: BoxDecoration(
-            // gradient: LinearGradient(
-            //   begin: Alignment.topCenter,
-            //   end: Alignment.bottomCenter,
-            //   colors: [Color(0xFFA7BAFF), Color(0xFFDFE4FE)],
-            // ),
-            color: Colors.white,
-          ),
-          child: SafeArea(
-            child: Column(
-              children: [
-                _buildTopNaviBar(),
-                Expanded(
-                  child: BlocBuilder<ChatCubit, ChatState>(
-                    builder: (context, state) {
-                      if (state is ChatInitial) {
-                        return SizedBox();
-                      }
-                      return ListView.separated(
-                        controller: _scrollController,
-                        padding: EdgeInsets.symmetric(vertical: 10),
-                        itemCount: state.messages.length,
-                        separatorBuilder: (_, __) => SizedBox(height: 10),
-                        itemBuilder: (context, index) {
-                          final message = state.messages[index];
-                          return message.isUser
-                              ? UserBubble(
-                                  chatMessageEntity: message,
-                                  scrollController: _scrollController,
-                                )
-                              : AIBubble(
-                                  chatMessageEntity: message,
-                                  scrollController: _scrollController,
-                                );
-                        },
-                      );
-                    },
+        child: BlocBuilder<DrawerProgressCubit, double>(
+          builder: (context, state) => Container(
+            decoration: BoxDecoration(
+              color: Color.lerp(
+                Colors.grey,
+                Colors.white,
+                context.read<DrawerProgressCubit>().state.clamp(0.0, 1.0),
+              ),
+            ),
+            child: SafeArea(
+              child: Column(
+                children: [
+                  _buildTopNaviBar(),
+                  Expanded(
+                    child: BlocBuilder<ChatCubit, ChatState>(
+                      builder: (context, state) {
+                        if (state is ChatInitial) {
+                          return SizedBox();
+                        }
+                        return ListView.separated(
+                          controller: _scrollController,
+                          padding: EdgeInsets.symmetric(vertical: 10),
+                          itemCount: state.messages.length,
+                          separatorBuilder: (_, __) => SizedBox(height: 10),
+                          itemBuilder: (context, index) {
+                            final message = state.messages[index];
+                            return message.isUser
+                                ? UserBubble(
+                                    chatMessageEntity: message,
+                                    scrollController: _scrollController,
+                                  )
+                                : AIBubble(
+                                    chatMessageEntity: message,
+                                    scrollController: _scrollController,
+                                  );
+                          },
+                        );
+                      },
+                    ),
                   ),
-                ),
-                _buildInput(),
-              ],
+                  _buildInput(),
+                ],
+              ),
             ),
           ),
         ),

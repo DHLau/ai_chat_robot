@@ -1,5 +1,6 @@
 import 'package:ai_chat_robot/presentation/chat/pages/chat_page.dart';
 import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_cubit.dart';
+import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_progress_cubit.dart';
 import 'package:ai_chat_robot/presentation/menu/menu_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -67,6 +68,8 @@ class _ChatGptHomeState extends State<ChatGptHome> {
         child: Builder(
           builder: (context) => NotificationListener<ScrollNotification>(
             onNotification: (ScrollNotification notification) {
+              final percent = _controller.offset / menuWidth;
+              context.read<DrawerProgressCubit>().drawerCurrentPercent(percent);
               if (notification is UserScrollNotification) {
                 // 确保是 UserScrollNotification 类型
                 if (notification.direction == ScrollDirection.idle) {
