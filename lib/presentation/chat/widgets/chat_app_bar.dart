@@ -16,7 +16,7 @@ class ChatAppBar extends StatelessWidget {
       width: double.infinity,
       height: 44,
       padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Stack(children: [_buildMainRow(context), _buildTitle()]),
+      child: Stack(children: [_buildMainRow(context), _buildTitle(context)]),
     );
   }
 
@@ -65,17 +65,21 @@ class ChatAppBar extends StatelessWidget {
     );
   }
 
-  Widget _buildTitle() {
+  Widget _buildTitle(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 100, vertical: 10),
+      margin: EdgeInsets.symmetric(
+        horizontal: MediaQuery.of(context).size.width / 2 - 50,
+      ),
       width: 100,
       height: 44,
-      child: const Text(
-        "Chat",
-        style: TextStyle(
-          color: AppColors.titleBlack,
-          fontSize: 20,
-          fontWeight: FontWeight.bold,
+      child: Center(
+        child: const Text(
+          "Chat",
+          style: TextStyle(
+            color: AppColors.titleBlack,
+            fontSize: 20,
+            fontWeight: FontWeight.bold,
+          ),
         ),
       ),
     );
