@@ -16,7 +16,6 @@ class ChatGptHome extends StatefulWidget {
 
 class _ChatGptHomeState extends State<ChatGptHome> {
   final ScrollController _controller = ScrollController();
-  bool _hapticTriggered = false;
   int animateTime = 150;
 
   @override

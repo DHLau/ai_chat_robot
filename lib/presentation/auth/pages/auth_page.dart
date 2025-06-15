@@ -1,5 +1,4 @@
 import 'package:ai_chat_robot/common/helper/navigator/app_navigator.dart';
-import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
 import 'package:ai_chat_robot/presentation/auth/bloc/auth_cubit.dart';
 import 'package:ai_chat_robot/presentation/auth/bloc/auth_state.dart';
 import 'package:ai_chat_robot/presentation/auth/pages/sign_in.dart';
