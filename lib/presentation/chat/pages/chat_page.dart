@@ -1,18 +1,18 @@
-import 'package:ai_chat_robot/common/helper/navigator/app_navigator.dart';
-import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:ai_chat_robot/presentation/auth/bloc/is_logged_in_cubit.dart';
-import 'package:ai_chat_robot/presentation/auth/pages/auth_page.dart';
 import 'package:ai_chat_robot/presentation/chat/bloc/chat_cubit.dart';
 import 'package:ai_chat_robot/presentation/chat/bloc/chat_state.dart';
 import 'package:ai_chat_robot/presentation/chat/widgets/ai_bubble.dart';
 import 'package:ai_chat_robot/presentation/chat/widgets/user_%20bubble.dart';
 import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_progress_cubit.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:ai_chat_robot/presentation/chat/widgets/chat_app_bar.dart';
+import 'package:ai_chat_robot/presentation/chat/widgets/chat_input.dart';
 
 class ChatPage extends StatefulWidget {
   final VoidCallback onMenuPressed;
-  ChatPage({super.key, required this.onMenuPressed});
+
+  const ChatPage({super.key, required this.onMenuPressed});
 
   @override
   State<ChatPage> createState() => _ChatPageState();
@@ -49,7 +49,7 @@ class _ChatPageState extends State<ChatPage> {
             child: Container(
               decoration: BoxDecoration(
                 color: Color.lerp(
-                  Color(0xffe0e0e0),
+                  const Color(0xffe0e0e0),
                   Colors.white,
                   context.read<DrawerProgressCubit>().state.clamp(0.0, 1.0),
                 ),
@@ -57,35 +57,13 @@ class _ChatPageState extends State<ChatPage> {
               child: SafeArea(
                 child: Column(
                   children: [
-                    _buildTopNaviBar(),
-                    Expanded(
-                      child: BlocBuilder<ChatCubit, ChatState>(
-                        builder: (context, state) {
-                          if (state is ChatInitial) {
-                            return SizedBox();
-                          }
-                          return ListView.separated(
-                            controller: _scrollController,
-                            padding: EdgeInsets.symmetric(vertical: 10),
-                            itemCount: state.messages.length,
-                            separatorBuilder: (_, __) => SizedBox(height: 10),
-                            itemBuilder: (context, index) {
-                              final message = state.messages[index];
-                              return message.isUser
-                                  ? UserBubble(
-                                      chatMessageEntity: message,
-                                      scrollController: _scrollController,
-                                    )
-                                  : AIBubble(
-                                      chatMessageEntity: message,
-                                      scrollController: _scrollController,
-                                    );
-                            },
-                          );
-                        },
-                      ),
+                    ChatAppBar(onMenuPressed: widget.onMenuPressed),
+                    Expanded(child: _buildMessageList()),
+                    ChatInput(
+                      controller: _controller,
+                      onMenuPressed: widget.onMenuPressed,
+                      onSendMessage: _handleSendMessage,
                     ),
-                    _buildInput(),
                   ],
                 ),
               ),
@@ -96,203 +74,38 @@ class _ChatPageState extends State<ChatPage> {
     );
   }
 
-  Widget _buildInput() {
-    return Builder(
-      builder: (context) => Container(
-        padding: EdgeInsets.only(left: 16, right: 16, bottom: 8, top: 8),
-        // 添加阴影上半部分和圆角
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(32),
-            topRight: Radius.circular(32),
-          ),
-          color: Color.lerp(
-            Color(0xffe0e0e0),
-            Colors.white,
-            context.read<DrawerProgressCubit>().state.clamp(0.0, 1.0),
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Color(0xffe0e0e0),
-              blurRadius: 12,
-              offset: Offset(0, -12),
-            ),
-          ],
-        ),
-        child: Column(
-          children: [
-            TextField(
-              controller: _controller,
-              style: TextStyle(color: AppColors.titleBlack),
-              decoration: InputDecoration(
-                hintText: 'Ask something else',
-                fillColor: Color.lerp(
-                  Color(0xffe0e0e0),
-                  Colors.white,
-                  context.read<DrawerProgressCubit>().state.clamp(0.0, 1.0),
-                ),
-                hintStyle: TextStyle(
-                  color: Colors.black.withValues(alpha: 0.4),
-                ),
-                contentPadding: EdgeInsets.symmetric(
-                  horizontal: 16,
-                  vertical: 12,
-                ),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                enabledBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-                focusedErrorBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(8),
-                  borderSide: BorderSide.none,
-                ),
-              ),
-            ),
-            Container(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        child: IconButton(
-                          iconSize: 25,
-                          padding: EdgeInsets.zero,
-                          icon: Icon(Icons.add),
-                          color: Colors.black,
-                          onPressed: widget.onMenuPressed,
-                        ),
-                      ),
-                      Container(
-                        width: 40,
-                        height: 40,
-                        child: IconButton(
-                          iconSize: 25,
-                          padding: EdgeInsets.zero,
-                          icon: Icon(Icons.menu_open),
-                          color: Colors.black,
-                          onPressed: widget.onMenuPressed,
-                        ),
-                      ),
-                    ],
-                  ),
-                  Row(
-                    children: [
-                      Container(
-                        width: 40,
-                        height: 40,
-                        child: IconButton(
-                          iconSize: 25,
-                          padding: EdgeInsets.zero,
-                          icon: Icon(Icons.macro_off),
-                          color: Colors.black,
-                          onPressed: widget.onMenuPressed,
-                        ),
-                      ),
-                      Container(
-                        width: 40,
-                        height: 40,
-                        child: IconButton(
-                          iconSize: 25,
-                          padding: EdgeInsets.zero,
-                          icon: Icon(Icons.send),
-                          color: Colors.black,
-                          onPressed: () {
-                            context.read<ChatCubit>().sendMessage(
-                              _controller.text,
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
+  Widget _buildMessageList() {
+    return BlocBuilder<ChatCubit, ChatState>(
+      builder: (context, state) {
+        if (state is ChatInitial) {
+          return const SizedBox();
+        }
+        return ListView.separated(
+          controller: _scrollController,
+          padding: const EdgeInsets.symmetric(vertical: 10),
+          itemCount: state.messages.length,
+          separatorBuilder: (_, __) => const SizedBox(height: 10),
+          itemBuilder: (context, index) {
+            final message = state.messages[index];
+            return message.isUser
+                ? UserBubble(
+                    chatMessageEntity: message,
+                    scrollController: _scrollController,
+                  )
+                : AIBubble(
+                    chatMessageEntity: message,
+                    scrollController: _scrollController,
+                  );
+          },
+        );
+      },
     );
   }
 
-  Widget _buildTopNaviBar() {
-    return Container(
-      width: double.infinity,
-      height: 44,
-      padding: EdgeInsets.symmetric(horizontal: 12),
-      child: Stack(
-        children: [
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                alignment: Alignment.center,
-                width: 40,
-                height: 40,
-                // 去掉点击效果
-                child: IconButton(
-                  iconSize: 25,
-                  padding: EdgeInsets.zero,
-                  icon: Icon(Icons.menu),
-                  color: Colors.black,
-                  // 去掉点击效果
-                  highlightColor: Colors.transparent,
-                  splashColor: Colors.transparent,
-                  onPressed: widget.onMenuPressed,
-                ),
-              ),
-              BlocBuilder<IsLoggedInCubit, bool>(
-                builder: (context, state) => state == true
-                    ? Container(height: 40)
-                    : Container(
-                        alignment: Alignment.center,
-                        height: 40,
-                        decoration: BoxDecoration(),
-                        child: TextButton(
-                          onPressed: () {
-                            AppNavigator.push(context, AuthPage());
-                          },
-                          child: Text(
-                            "Sign in",
-                            style: TextStyle(
-                              color: AppColors.titleBlack,
-                              fontSize: 16,
-                            ),
-                          ),
-                        ),
-                      ),
-              ),
-            ],
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(
-              horizontal: MediaQuery.of(context).size.width / 2 - 38,
-              vertical: 10,
-            ),
-            width: 100,
-            height: 44,
-            child: Text(
-              "Chat",
-              style: TextStyle(
-                color: AppColors.titleBlack,
-                fontSize: 20,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+  void _handleSendMessage() {
+    if (_controller.text.isNotEmpty) {
+      context.read<ChatCubit>().sendMessage(_controller.text);
+      _controller.clear();
+    }
   }
 }
