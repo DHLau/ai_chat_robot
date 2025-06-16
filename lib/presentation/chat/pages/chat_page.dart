@@ -5,7 +5,7 @@ import 'package:ai_chat_robot/presentation/chat/bloc/chat_cubit.dart';
 import 'package:ai_chat_robot/presentation/chat/bloc/chat_state.dart';
 import 'package:ai_chat_robot/presentation/chat/widgets/ai_bubble.dart';
 import 'package:ai_chat_robot/presentation/chat/widgets/user_%20bubble.dart';
-import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_progress_cubit.dart';
+import 'package:ai_chat_robot/presentation/home/bloc/drawer_progress_cubit.dart';
 import 'package:ai_chat_robot/presentation/chat/widgets/chat_app_bar.dart';
 import 'package:ai_chat_robot/presentation/chat/widgets/chat_input.dart';
 

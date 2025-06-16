@@ -3,8 +3,8 @@ import 'package:ai_chat_robot/presentation/auth/bloc/auth_cubit.dart';
 import 'package:ai_chat_robot/presentation/auth/bloc/auth_state.dart';
 import 'package:ai_chat_robot/presentation/auth/pages/sign_in.dart';
 import 'package:ai_chat_robot/presentation/auth/pages/sign_up.dart';
-import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_cubit.dart';
-import 'package:ai_chat_robot/presentation/homeV2/pages/chat_gpt_home.dart';
+import 'package:ai_chat_robot/presentation/home/bloc/drawer_cubit.dart';
+import 'package:ai_chat_robot/presentation/home/pages/chat_gpt_home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:ai_chat_robot/presentation/homeV2/bloc/drawer_progress_cubit.dart';
+import 'package:ai_chat_robot/presentation/home/bloc/drawer_progress_cubit.dart';
 
 class ChatInput extends StatelessWidget {
   final TextEditingController controller;
