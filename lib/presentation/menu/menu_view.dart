@@ -15,11 +15,12 @@ class MenuView extends StatelessWidget {
       create: (context) => IsLoggedInCubit()..checkIsLoggedIn(),
       child: BlocBuilder<IsLoggedInCubit, bool>(
         builder: (context, state) {
-          if (state) {
-            return MenuViewLoggedIn();
-          } else {
-            return MenuViewNotLoggedIn(onTapClose: onTapClose);
-          }
+          // if (state) {
+          //   return MenuViewLoggedIn();
+          // } else {
+          //   return MenuViewNotLoggedIn(onTapClose: onTapClose);
+          // }
+          return MenuViewLoggedIn(onTapClose: onTapClose);
         },
       ),
     );
