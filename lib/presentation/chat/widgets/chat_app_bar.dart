@@ -5,21 +5,26 @@ import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
 import 'package:ai_chat_robot/presentation/auth/bloc/is_logged_in_cubit.dart';
 import 'package:ai_chat_robot/presentation/auth/pages/auth_page.dart';
 
+/// 聊天应用栏组件
 class ChatAppBar extends StatelessWidget {
+  /// 菜单按钮点击回调
   final VoidCallback onMenuPressed;
 
   const ChatAppBar({super.key, required this.onMenuPressed});
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       width: double.infinity,
       height: 44,
-      padding: const EdgeInsets.symmetric(horizontal: 12),
-      child: Stack(children: [_buildMainRow(context), _buildTitle(context)]),
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12),
+        child: Stack(children: [_buildMainRow(context), _buildTitle(context)]),
+      ),
     );
   }
 
+  /// 构建主行按钮，包含菜单按钮和登录按钮
   Widget _buildMainRow(BuildContext context) {
     return Row(
       crossAxisAlignment: CrossAxisAlignment.center,
@@ -28,6 +33,7 @@ class ChatAppBar extends StatelessWidget {
     );
   }
 
+  /// 构建菜单按钮
   Widget _buildMenuButton() {
     return Container(
       alignment: Alignment.center,
@@ -45,6 +51,7 @@ class ChatAppBar extends StatelessWidget {
     );
   }
 
+  /// 根据登录状态构建登录按钮或空白占位
   Widget _buildSignInButton(BuildContext context) {
     return BlocBuilder<IsLoggedInCubit, bool>(
       builder: (context, state) => state == true
@@ -65,6 +72,7 @@ class ChatAppBar extends StatelessWidget {
     );
   }
 
+  /// 构建标题
   Widget _buildTitle(BuildContext context) {
     return Container(
       margin: EdgeInsets.symmetric(
