@@ -1,10 +1,14 @@
 import 'dart:convert';
 
+import 'package:ai_chat_robot/data/chat/models/chat_pair_model.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:http/http.dart' as http;
 
 abstract class ChatOpenRouterService {
   Future<Either> sendMessage(String message);
+  Future<Either> saveCurrentPairsEntities(ChatPairsModel pairsEntities);
 }
 
 class ChatOpenRouterServiceImpl implements ChatOpenRouterService {
@@ -40,6 +44,21 @@ class ChatOpenRouterServiceImpl implements ChatOpenRouterService {
       return Right(content);
     } else {
       return Left('Error: ${response.statusCode}, ${response.body}');
+    }
+  }
+
+  @override
+  Future<Either> saveCurrentPairsEntities(ChatPairsModel pairsEntities) async {
+    try {
+      var user = FirebaseAuth.instance.currentUser;
+      await FirebaseFirestore.instance
+          .collection("Users")
+          .doc(user!.uid)
+          .collection('Messages')
+          .add(pairsEntities.toMap());
+      return Right("Add to cart successfully");
+    } catch (e) {
+      return Left("Please try again later");
     }
   }
 }

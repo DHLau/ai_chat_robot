@@ -1,3 +1,4 @@
+import 'package:ai_chat_robot/presentation/chat/bloc/chat_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:ai_chat_robot/core/configs/theme/app_colors.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -6,13 +7,11 @@ import 'package:ai_chat_robot/presentation/home/bloc/drawer_progress_cubit.dart'
 class ChatInput extends StatelessWidget {
   final TextEditingController controller;
   final VoidCallback onMenuPressed;
-  final VoidCallback onSendMessage;
 
   const ChatInput({
     super.key,
     required this.controller,
     required this.onMenuPressed,
-    required this.onSendMessage,
   });
 
   @override
@@ -87,7 +86,12 @@ class ChatInput extends StatelessWidget {
         Row(
           children: [
             _buildIconButton(Icons.macro_off, onMenuPressed),
-            _buildIconButton(Icons.send, onSendMessage),
+            _buildIconButton(Icons.send, () {
+              if (controller.text.isNotEmpty) {
+                context.read<ChatCubit>().sendMessage(controller.text);
+                controller.clear();
+              }
+            }),
           ],
         ),
       ],

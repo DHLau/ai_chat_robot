@@ -1,5 +1,7 @@
 import 'package:ai_chat_robot/data/chat/models/chat_message_model.dart';
+import 'package:ai_chat_robot/data/chat/models/chat_pair_model.dart';
 import 'package:ai_chat_robot/data/chat/source/chat_open_router_service.dart';
+import 'package:ai_chat_robot/domain/chat/entities/chat_pair_entity.dart';
 import 'package:ai_chat_robot/domain/chat/repository/chat_respository.dart';
 import 'package:ai_chat_robot/service_locator.dart';
 import 'package:dartz/dartz.dart';
@@ -29,6 +31,14 @@ class ChatRespositoryImpl implements ChatRespository {
         );
         return Left(chatMessageModel.toEntity());
       },
+    );
+  }
+
+  @override
+  Future<Either> saveCurrentPairsEntities(ChatPairsEntity pairsEntities) async {
+    ChatPairsModel pairsModel = pairsEntities.fromEntity();
+    return await sl<ChatOpenRouterService>().saveCurrentPairsEntities(
+      pairsModel,
     );
   }
 }

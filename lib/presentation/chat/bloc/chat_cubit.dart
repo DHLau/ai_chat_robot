@@ -1,7 +1,10 @@
 import 'package:ai_chat_robot/domain/chat/entities/chat_message_entity.dart';
+import 'package:ai_chat_robot/domain/chat/entities/chat_pair_entity.dart';
+import 'package:ai_chat_robot/domain/chat/usecase/chat_save_message_usecase.dart';
 import 'package:ai_chat_robot/domain/chat/usecase/chat_usecase.dart';
 import 'package:ai_chat_robot/presentation/chat/bloc/chat_state.dart';
 import 'package:ai_chat_robot/service_locator.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:uuid/uuid.dart';
 
@@ -26,6 +29,15 @@ class ChatCubit extends Cubit<ChatState> {
       (l) {
         newestMessageId = l.id;
         emit(ChatSuccess([...state.messages, l]));
+
+        // 保存聊天记录
+        var currentPairsMessage = ChatPairsEntity(
+          id: newestMessageId,
+          createdDate: Timestamp.now(),
+          userEntity: userMessage,
+          aiEntity: l,
+        );
+        sl<ChatSaveMessageUsecase>().call(params: currentPairsMessage);
       },
       (r) {
         newestMessageId = r.id;

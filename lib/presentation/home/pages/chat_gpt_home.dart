@@ -17,6 +17,7 @@ class ChatGptHome extends StatefulWidget {
 class _ChatGptHomeState extends State<ChatGptHome> {
   final ScrollController _controller = ScrollController();
   int animateTime = 150;
+  bool needFeedback = true;
 
   @override
   void dispose() {
@@ -55,7 +56,9 @@ class _ChatGptHomeState extends State<ChatGptHome> {
             onNotification: (ScrollNotification notification) {
               final percent = _controller.offset / menuWidth;
               context.read<DrawerProgressCubit>().drawerCurrentPercent(percent);
-              if (notification is ScrollEndNotification) {
+              if (notification is ScrollEndNotification &&
+                  needFeedback == true) {
+                needFeedback = false;
                 HapticFeedback.mediumImpact();
               }
 
@@ -79,6 +82,7 @@ class _ChatGptHomeState extends State<ChatGptHome> {
                     );
                     context.read<DrawerCubit>().setDrawer(false);
                   }
+                  needFeedback = true;
                 }
               }
               return true;

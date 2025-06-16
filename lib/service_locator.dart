@@ -6,6 +6,7 @@ import 'package:ai_chat_robot/domain/auth/repository/auth_repository.dart';
 import 'package:ai_chat_robot/domain/auth/usecase/auth_signin_with_google.dart';
 import 'package:ai_chat_robot/domain/auth/usecase/is_logged_in.dart';
 import 'package:ai_chat_robot/domain/chat/repository/chat_respository.dart';
+import 'package:ai_chat_robot/domain/chat/usecase/chat_save_message_usecase.dart';
 import 'package:ai_chat_robot/domain/chat/usecase/chat_usecase.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:get_it/get_it.dart';
@@ -26,4 +27,5 @@ Future<void> initializeDependencies() async {
     AuthSigninWithGoogleUseCase(),
   );
   sl.registerSingleton<IsLoggedInUseCase>(IsLoggedInUseCase());
+  sl.registerSingleton<ChatSaveMessageUsecase>(ChatSaveMessageUsecase());
 }

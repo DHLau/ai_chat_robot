@@ -62,7 +62,6 @@ class _ChatPageState extends State<ChatPage> {
                     ChatInput(
                       controller: _controller,
                       onMenuPressed: widget.onMenuPressed,
-                      onSendMessage: _handleSendMessage,
                     ),
                   ],
                 ),
@@ -100,12 +99,5 @@ class _ChatPageState extends State<ChatPage> {
         );
       },
     );
-  }
-
-  void _handleSendMessage() {
-    if (_controller.text.isNotEmpty) {
-      context.read<ChatCubit>().sendMessage(_controller.text);
-      _controller.clear();
-    }
   }
 }
