@@ -22,7 +22,7 @@ class AuthCubit extends Cubit<AuthState> {
     );
   }
 
-  void signIn(String email, String password) async {
+  void signIn({required String email, required String password}) async {
     emit(AuthLoading());
     var returnedData = await sl<SignInWithEmailUseCase>().call(
       params: UserCreationReq(email: email, password: password),
