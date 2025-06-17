@@ -6,7 +6,7 @@ import 'package:dartz/dartz.dart';
 
 class SignInWithEmailUseCase extends UseCase<Either, UserCreationReq> {
   @override
-  Future<Either> call({UserCreationReq? params}) {
-    return sl<AuthRepository>().signin(params!);
+  Future<Either> call({UserCreationReq? params}) async {
+    return await sl<AuthRepository>().signin(params!);
   }
 }
