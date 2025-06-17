@@ -27,9 +27,7 @@ class AuthPage extends StatelessWidget {
                 ),
               );
             } else if (state is AuthSuccess) {
-              var snackBar = SnackBar(
-                content: Text("登录成功 ${state.user.userId}"),
-              );
+              var snackBar = SnackBar(content: Text("登录成功"));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
               AppNavigator.pushReplacement(
                 context,

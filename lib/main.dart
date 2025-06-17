@@ -1,5 +1,7 @@
 import 'package:ai_chat_robot/core/configs/theme/app_theme.dart';
 import 'package:ai_chat_robot/firebase_options.dart';
+import 'package:ai_chat_robot/presentation/home/bloc/drawer_cubit.dart';
+import 'package:ai_chat_robot/presentation/home/bloc/drawer_progress_cubit.dart';
 import 'package:ai_chat_robot/presentation/splash/bloc/splash_cubit.dart';
 import 'package:ai_chat_robot/presentation/splash/pages/splash_page.dart';
 import 'package:ai_chat_robot/service_locator.dart';
@@ -21,8 +23,12 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => SplashCubit()..appStart(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => DrawerProgressCubit()),
+        BlocProvider(create: (_) => DrawerCubit()),
+        BlocProvider(create: (context) => SplashCubit()..appStart()),
+      ],
       child: MaterialApp(home: const SplashPage(), theme: AppTheme.appTheme),
     );
   }

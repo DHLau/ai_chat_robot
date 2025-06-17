@@ -38,4 +38,9 @@ class AuthRepositoryImpl implements AuthRepository {
   Future<bool> isLoggedIn() async {
     return await sl<AuthFirebaseService>().isLoggedIn();
   }
+
+  @override
+  Future<Either> signout() async {
+    return await sl<AuthFirebaseService>().signout();
+  }
 }

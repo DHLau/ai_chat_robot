@@ -7,6 +7,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 abstract class AuthFirebaseService {
   Future<Either> signup(UserCreationReq userCreationReq);
   Future<Either> signin(UserCreationReq userCreationReq);
+  Future<Either> signout();
   Future<Either> signinWithGoogle();
   Future<bool> isLoggedIn();
 }
@@ -40,8 +41,8 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
   Future<Either> signin(UserCreationReq userCreationReq) async {
     try {
       await FirebaseAuth.instance.signInWithEmailAndPassword(
-        email: userCreationReq.email!,
-        password: userCreationReq.password!,
+        email: userCreationReq.email,
+        password: userCreationReq.password,
       );
       return Right('Signin was successful');
     } on FirebaseAuthException catch (e) {
@@ -60,8 +61,8 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
     try {
       var returnedData = await FirebaseAuth.instance
           .createUserWithEmailAndPassword(
-            email: userCreationReq.email!,
-            password: userCreationReq.password!,
+            email: userCreationReq.email,
+            password: userCreationReq.password,
           );
       await FirebaseFirestore.instance
           .collection('Users')
@@ -76,6 +77,9 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
         message = 'The account already exists for that email.';
       }
       return Left(message);
+    } catch (e) {
+      // 捕获 Firestore 或其他未知错误
+      return Left('Sign up failed: ${e.toString()}');
     }
   }
 
@@ -85,6 +89,16 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
       return true;
     } else {
       return false;
+    }
+  }
+
+  @override
+  Future<Either> signout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      return Right(true);
+    } catch (e) {
+      return Left(e.toString());
     }
   }
 }

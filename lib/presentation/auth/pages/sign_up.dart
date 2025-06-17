@@ -39,16 +39,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 context: context,
                 barrierDismissible: false,
                 builder: (context) => const Center(
-                  child: CircularProgressIndicator(color: Colors.black),
+                  child: CircularProgressIndicator(color: Colors.grey),
                 ),
               );
             } else if (state is AuthSuccess) {
-              var snackBar = SnackBar(
-                content: Text("注册成功 ${state.user.userId}"),
-              );
-              ScaffoldMessenger.of(context).showSnackBar(snackBar);
-              AppNavigator.pushReplacement(context, SignInPage());
+              Navigator.of(context, rootNavigator: true).pop(); // 关闭dialog
+              AppNavigator.pushReplacement(context, const ChatGptHome());
             } else if (state is AuthFailure) {
+              Navigator.of(context, rootNavigator: true).pop(); // 关闭dialog
               var snackBar = SnackBar(content: Text(state.message));
               ScaffoldMessenger.of(context).showSnackBar(snackBar);
             }
@@ -144,43 +142,49 @@ class _SignUpPageState extends State<SignUpPage> {
                             color: Colors.black,
                             borderRadius: BorderRadius.circular(30),
                           ),
-                          child: GestureDetector(
-                            onTap: () {
-                              if (_emailController.text.isEmpty) {
-                                var snackBar = SnackBar(content: Text("请输入邮箱"));
-                                ScaffoldMessenger.of(
-                                  context,
-                                ).showSnackBar(snackBar);
-                                return;
-                              }
-                              if (_passwordController.text.isEmpty) {
-                                var snackBar = SnackBar(content: Text("请输入密码"));
-                                ScaffoldMessenger.of(
-                                  context,
-                                ).showSnackBar(snackBar);
-                                return;
-                              }
-                              if (_nameController.text.isEmpty) {
-                                var snackBar = SnackBar(
-                                  content: Text("请输入您的名字"),
+                          child: Builder(
+                            builder: (context) => GestureDetector(
+                              onTap: () {
+                                if (_emailController.text.isEmpty) {
+                                  var snackBar = SnackBar(
+                                    content: Text("请输入邮箱"),
+                                  );
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).showSnackBar(snackBar);
+                                  return;
+                                }
+                                if (_passwordController.text.isEmpty) {
+                                  var snackBar = SnackBar(
+                                    content: Text("请输入密码"),
+                                  );
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).showSnackBar(snackBar);
+                                  return;
+                                }
+                                if (_nameController.text.isEmpty) {
+                                  var snackBar = SnackBar(
+                                    content: Text("请输入您的名字"),
+                                  );
+                                  ScaffoldMessenger.of(
+                                    context,
+                                  ).showSnackBar(snackBar);
+                                  return;
+                                }
+                                context.read<AuthCubit>().signUp(
+                                  _emailController.text,
+                                  _passwordController.text,
+                                  _nameController.text,
                                 );
-                                ScaffoldMessenger.of(
-                                  context,
-                                ).showSnackBar(snackBar);
-                                return;
-                              }
-                              context.read<AuthCubit>().signUp(
-                                _emailController.text,
-                                _passwordController.text,
-                                _nameController.text,
-                              );
-                            },
-                            child: Center(
-                              child: Text(
-                                "继续",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                              },
+                              child: Center(
+                                child: Text(
+                                  "继续",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),

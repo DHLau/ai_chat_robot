@@ -4,7 +4,7 @@ import 'package:ai_chat_robot/service_locator.dart';
 
 class AuthSigninWithGoogleUseCase extends UseCase<dynamic, void> {
   @override
-  Future call({void params}) {
-    return sl<AuthRepository>().signinWithGoogle();
+  Future call({void params}) async {
+    return await sl<AuthRepository>().signinWithGoogle();
   }
 }
