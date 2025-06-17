@@ -1,6 +1,9 @@
 import 'package:ai_chat_robot/common/helper/navigator/app_navigator.dart';
+import 'package:ai_chat_robot/presentation/menu/bloc/user_info_display_cubit.dart';
+import 'package:ai_chat_robot/presentation/menu/bloc/user_info_display_state.dart';
 import 'package:ai_chat_robot/presentation/settings/pages/setting.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MenuViewLoggedIn extends StatelessWidget {
   final VoidCallback onTapClose;
@@ -8,13 +11,16 @@ class MenuViewLoggedIn extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Column(
-        children: [
-          _buildTopBar(),
-          _buildChatHistoryList(),
-          _buildBottomBar(context),
-        ],
+    return BlocProvider(
+      create: (context) => UserInfoDisplayCubit()..displayUserInfo(),
+      child: SafeArea(
+        child: Column(
+          children: [
+            _buildTopBar(),
+            _buildChatHistoryList(),
+            _buildBottomBar(context),
+          ],
+        ),
       ),
     );
   }
@@ -87,22 +93,29 @@ class MenuViewLoggedIn extends StatelessWidget {
   }
 
   Widget _buildBottomBar(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        AppNavigator.modal(context, SettingsPage());
-      },
-      child: Container(
-        padding: EdgeInsets.only(top: 12, left: 16, right: 16, bottom: 0),
-        child: Row(
-          children: [
-            Image(
-              image: AssetImage('assets/images/header_image.png'),
-              width: 32,
-              height: 32,
-            ),
-            const SizedBox(width: 8),
-            Text('Nick Name', style: TextStyle(color: Colors.black)),
-          ],
+    return BlocBuilder<UserInfoDisplayCubit, UserInfoDisplayState>(
+      builder: (context, state) => GestureDetector(
+        onTap: () {
+          AppNavigator.modal(context, SettingsPage());
+        },
+        child: Container(
+          padding: EdgeInsets.only(top: 12, left: 16, right: 16, bottom: 0),
+          child: Row(
+            children: [
+              Image(
+                image: AssetImage('assets/images/header_image.png'),
+                width: 32,
+                height: 32,
+              ),
+              const SizedBox(width: 8),
+              state is UserInfoLoaded
+                  ? Text(
+                      state.user.userName ?? "",
+                      style: TextStyle(color: Colors.black),
+                    )
+                  : Text(""),
+            ],
+          ),
         ),
       ),
     );

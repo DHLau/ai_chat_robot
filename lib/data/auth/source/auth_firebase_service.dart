@@ -10,6 +10,7 @@ abstract class AuthFirebaseService {
   Future<Either> signout();
   Future<Either> signinWithGoogle();
   Future<bool> isLoggedIn();
+  Future<Either> getUser();
 }
 
 class AuthFirebaseServiceImpl extends AuthFirebaseService {
@@ -67,7 +68,10 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
       await FirebaseFirestore.instance
           .collection('Users')
           .doc(returnedData.user!.uid)
-          .set({'userName': userCreationReq.username});
+          .set({
+            'userId': returnedData.user!.uid,
+            'userName': userCreationReq.username,
+          });
       return Right('Sign up was successful');
     } on FirebaseAuthException catch (e) {
       String message = '';
@@ -99,6 +103,21 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
       return Right(true);
     } catch (e) {
       return Left(e.toString());
+    }
+  }
+
+  @override
+  Future<Either> getUser() async {
+    try {
+      var currentUser = FirebaseAuth.instance.currentUser;
+      var userData = await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(currentUser?.uid)
+          .get()
+          .then((value) => value.data());
+      return Right(userData);
+    } catch (e) {
+      return const Left('Please try again');
     }
   }
 }

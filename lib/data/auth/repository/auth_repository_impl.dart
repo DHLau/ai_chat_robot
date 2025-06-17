@@ -1,4 +1,5 @@
 import 'package:ai_chat_robot/data/auth/models/user_creation_req.dart';
+import 'package:ai_chat_robot/data/auth/models/user_model.dart';
 import 'package:ai_chat_robot/data/auth/source/auth_firebase_service.dart';
 import 'package:ai_chat_robot/domain/auth/entities/user_entity.dart';
 import 'package:ai_chat_robot/domain/auth/repository/auth_repository.dart';
@@ -15,7 +16,7 @@ class AuthRepositoryImpl implements AuthRepository {
       if (userCredential.user != null) {
         final entity = UserEntity(
           userId: userCredential.user!.uid,
-          username: userCredential.user!.displayName ?? '',
+          userName: userCredential.user!.displayName ?? '',
           email: userCredential.user!.email ?? '',
         );
         return right(entity);
@@ -42,5 +43,18 @@ class AuthRepositoryImpl implements AuthRepository {
   @override
   Future<Either> signout() async {
     return await sl<AuthFirebaseService>().signout();
+  }
+
+  @override
+  Future<Either> getUser() async {
+    var user = await sl<AuthFirebaseService>().getUser();
+    return user.fold(
+      (error) {
+        return Left(error);
+      },
+      (data) {
+        return Right(UserModel.fromMap(data).toEntity());
+      },
+    );
   }
 }

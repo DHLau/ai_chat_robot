@@ -1,6 +1,6 @@
 import 'package:ai_chat_robot/presentation/auth/bloc/is_logged_in_cubit.dart';
-import 'package:ai_chat_robot/presentation/menu/menu_logined.dart';
-import 'package:ai_chat_robot/presentation/menu/menu_unlogin.dart';
+import 'package:ai_chat_robot/presentation/menu/pages/menu_logined.dart';
+import 'package:ai_chat_robot/presentation/menu/pages/menu_unlogin.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 

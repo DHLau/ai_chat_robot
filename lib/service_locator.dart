@@ -4,6 +4,7 @@ import 'package:ai_chat_robot/data/chat/repository/chat_respository_impl.dart';
 import 'package:ai_chat_robot/data/chat/source/chat_open_router_service.dart';
 import 'package:ai_chat_robot/domain/auth/repository/auth_repository.dart';
 import 'package:ai_chat_robot/domain/auth/usecase/auth_signin_with_google.dart';
+import 'package:ai_chat_robot/domain/auth/usecase/get_user.dart';
 import 'package:ai_chat_robot/domain/auth/usecase/is_logged_in.dart';
 import 'package:ai_chat_robot/domain/auth/usecase/sign_in_with_email.dart';
 import 'package:ai_chat_robot/domain/auth/usecase/sign_out.dart';
@@ -34,4 +35,5 @@ Future<void> initializeDependencies() async {
   sl.registerSingleton<SignInWithEmailUseCase>(SignInWithEmailUseCase());
   sl.registerSingleton<SignUpWithEmailUseCase>(SignUpWithEmailUseCase());
   sl.registerSingleton<SignOutUseCase>(SignOutUseCase());
+  sl.registerSingleton<GetUserUseCase>(GetUserUseCase());
 }
