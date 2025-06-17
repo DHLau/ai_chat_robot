@@ -8,11 +8,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 
 class AuthRepositoryImpl implements AuthRepository {
   @override
-  Future<Either> signin(UserCreationReq userCreationReq) {
-    throw UnimplementedError();
-  }
-
-  @override
   Future<Either> signinWithGoogle() async {
     final returnData = await sl<AuthFirebaseService>().signinWithGoogle();
     return returnData.fold((l) => left(l), (r) {
@@ -30,8 +25,13 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<Either> signup(UserCreationReq userCreationReq) {
-    throw UnimplementedError();
+  Future<Either> signin(UserCreationReq userCreationReq) async {
+    return await sl<AuthFirebaseService>().signin(userCreationReq);
+  }
+
+  @override
+  Future<Either> signup(UserCreationReq userCreationReq) async {
+    return await sl<AuthFirebaseService>().signup(userCreationReq);
   }
 
   @override

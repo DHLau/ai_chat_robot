@@ -1,4 +1,5 @@
 import 'package:ai_chat_robot/data/auth/models/user_creation_req.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:dartz/dartz.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -36,13 +37,46 @@ class AuthFirebaseServiceImpl extends AuthFirebaseService {
   }
 
   @override
-  Future<Either> signin(UserCreationReq userCreationReq) {
-    throw UnimplementedError();
+  Future<Either> signin(UserCreationReq userCreationReq) async {
+    try {
+      await FirebaseAuth.instance.signInWithEmailAndPassword(
+        email: userCreationReq.email!,
+        password: userCreationReq.password!,
+      );
+      return Right('Signin was successful');
+    } on FirebaseAuthException catch (e) {
+      String message = '';
+      if (e.code == 'invalid-email') {
+        message = 'The email provided is not valid.';
+      } else if (e.code == 'invalid-credential') {
+        message = 'Wrong password provided for that user.';
+      }
+      return Left(message);
+    }
   }
 
   @override
-  Future<Either> signup(UserCreationReq userCreationReq) {
-    throw UnimplementedError();
+  Future<Either> signup(UserCreationReq userCreationReq) async {
+    try {
+      var returnedData = await FirebaseAuth.instance
+          .createUserWithEmailAndPassword(
+            email: userCreationReq.email!,
+            password: userCreationReq.password!,
+          );
+      await FirebaseFirestore.instance
+          .collection('Users')
+          .doc(returnedData.user!.uid)
+          .set({'userName': userCreationReq.username});
+      return Right('Sign up was successful');
+    } on FirebaseAuthException catch (e) {
+      String message = '';
+      if (e.code == 'weak-password') {
+        message = 'The password provided is too weak.';
+      } else if (e.code == 'email-already-in-use') {
+        message = 'The account already exists for that email.';
+      }
+      return Left(message);
+    }
   }
 
   @override

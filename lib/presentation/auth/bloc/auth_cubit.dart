@@ -1,4 +1,7 @@
+import 'package:ai_chat_robot/data/auth/models/user_creation_req.dart';
 import 'package:ai_chat_robot/domain/auth/usecase/auth_signin_with_google.dart';
+import 'package:ai_chat_robot/domain/auth/usecase/sign_in_with_email.dart';
+import 'package:ai_chat_robot/domain/auth/usecase/sign_up_with_email.dart';
 import 'package:ai_chat_robot/presentation/auth/bloc/auth_state.dart';
 import 'package:ai_chat_robot/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -15,6 +18,22 @@ class AuthCubit extends Cubit<AuthState> {
       (r) {
         emit(AuthSuccess(r));
       },
+    );
+  }
+
+  void signIn(String email, String password) {
+    sl<SignInWithEmailUseCase>().call(
+      params: UserCreationReq(email: email, password: password),
+    );
+  }
+
+  void signUp(String email, String password, String username) {
+    sl<SignUpWithEmailUseCase>().call(
+      params: UserCreationReq(
+        email: email,
+        password: password,
+        username: username,
+      ),
     );
   }
 }
